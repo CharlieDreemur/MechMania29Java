@@ -46,38 +46,22 @@ public class AstarStrategy {
     }
 
     public int getPathCost(GameState gameState, Position a, Position b) {
-        // Retrieve the Terrain at position b
         Terrain terrain = getTerrainAtPosition(gameState, b);
-
+    
         if (terrain == null) {
-            // If there's no specific terrain, assume it's an empty field.
-            return 2;
+            return 1;  // If there's no specific terrain, assume it's an empty field.
         }
-
-        return terrain.health() > 0 ? terrain.health() * 10 : Integer.MAX_VALUE; // water's durability is -1
-
-        // // String terrainType = terrain.get(terrain.id()).type();
-        // String terrainType = gameState.terrains().get(terrain.id());
-
-        // switch(terrainType) { // not sure if the terrainType is correct, NEED TESTING
-        //     case "WALL":
-        //     case "BARRICADE":
-        //     case "TREE":
-        //         // These obstacles have to be destroyed first.
-        //         // The cost could be proportional to their health, or infinite for simplicity.
-        //         return terrain.health();
-
-        //     case "WATER":
-        //         // Zombies can't pass water at all
-        //         return Integer.MAX_VALUE;
-
-        //     default:
-        //         // If terrain can be attacked through or if it's an unknown type, assume it's passable
-        //         return terrain.canAttackThrough() ? 1 : Integer.MAX_VALUE;
-        // }
+        
+        if (terrain.health() <= 0) {
+            return Integer.MAX_VALUE;  // water's durability is -1 or any other impassable terrain.
+        }
+    
+        // The cost to destroy the obstacle is equal to its health since each attack (turn) decrements by 1.
+        int terrainDestructionCost = terrain.health();  
+        
+        // This time, we don't need to multiply by any factor, since the cost directly corresponds to the number of turns.
+        return 1 + terrainDestructionCost;  
     }
-
-
 
     public List<Position> getPath(GameState gameState, Position a, Position b) { // if cannot arrive b, check if neighbor can arrive
         Set<Position> closedSet = new HashSet<>();
