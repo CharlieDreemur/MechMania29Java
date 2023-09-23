@@ -3,6 +3,7 @@ package mech.mania.starterpack.strategy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import mech.mania.starterpack.game.GameState;
 import mech.mania.starterpack.game.util.Position;
@@ -31,7 +32,8 @@ public class HumanHelpers {
             float dx = futureDest.x() - selfPos.x();
             float dy = futureDest.y() - selfPos.y();
             // Calculate the dot product between the unit vector and the position vector
-            double dotProduct = dx * unitX + dy * unitY;
+            if (futureDest.x() >= 0 && futureDest.x() <= 99 && futureDest.y() >= 0 && futureDest.y() <= 99) {
+                double dotProduct = dx * unitX + dy * unitY;
 
             // Check if this position goes further along the unit vector
             if (dotProduct > maxDotProduct) {
@@ -39,8 +41,8 @@ public class HumanHelpers {
                 furthestPoint = futureDest;
                 best = possible;
             }
+            }
         }
-
         return best;
     }
 
@@ -74,18 +76,38 @@ public class HumanHelpers {
     }
 
     public static AbilityAction Heal(GameState gameState, List<AbilityAction> abilities) {
-        AbilityAction humanTarget = abilities.get(0);
+        AbilityAction humanTarget = null; // Initialize to null
         int leastHealth = Integer.MAX_VALUE;
+    
         // Find the human target with the least health to heal
         for (AbilityAction a : abilities) {
-            int health = gameState.characters().get(a.characterIdTarget()).health();
-            if (health < leastHealth) {
-                humanTarget = a;
-                leastHealth = health;
+            String characterIdTarget = a.characterIdTarget();
+    
+            // Check if the character exists in the gameState
+            if (gameState.characters().containsKey(characterIdTarget)) {
+                // Get the character
+                Character character = gameState.characters().get(characterIdTarget);
+                
+                // Check if the character's health is not null
+                if (character != null) {
+                    int health = character.health();
+                    
+                    if (health < leastHealth) {
+                        humanTarget = a;
+                        leastHealth = health;
+                    }
+                }
             }
         }
+    
         return humanTarget;
     }
+    
+    
+    
+    
+    
+    
 
     public static AbilityAction SuperBuild(GameState gameState, List<AbilityAction> abilities) {
         List<Position> positions = new ArrayList<Position>();
@@ -107,7 +129,7 @@ public class HumanHelpers {
         for (AbilityAction possible : abilities) {
             for (Position pos : positions) {
                 System.out.println("Possible: " + possible.positionalTarget().toString() + " Pos: " + pos.toString() + "\n");
-                if (possible.positionalTarget().equals(pos)) {
+                if (possible.positionalTarget().x()==pos.x() && possible.positionalTarget().y()==pos.y()) {
                     return possible;
                 }
             }
