@@ -59,7 +59,7 @@ public class SuperHuman extends IndividualStrategy {
             case 20:
                 return new MoveAction(id, new Position(50, 66));
             case 22:
-                return new MoveAction(id, new Position(50, 66));
+                return new MoveAction(id, new Position(50, 69));
             case 24:
                 return new MoveAction(id, new Position(47, 69));
             case 26:
