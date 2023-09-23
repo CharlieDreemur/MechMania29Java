@@ -66,7 +66,7 @@ public class NaiveBuilder extends IndividualStrategy {
     @Override
     public AbilityAction Ability(String id, GameState gameState, List<AbilityAction> abilityActions) {
         // TODO Auto-generated method stub
-        AbilityAction best = HumanHelpers.chooseAbility(gameState, abilityActions);
+        AbilityAction best = HumanHelpers.Build(gameState, abilityActions);
         return best;
     }
 
