@@ -24,26 +24,20 @@ public class SuperHuman extends IndividualStrategy {
             List<MoveAction> moveActions) {
         Init(id, gameState);
         // Handle the case where there is no move to be made, such as when stunned
+        if (self.classType == CharacterClassType.)
         if (moveActions.isEmpty()) {
             return null;
         }
         System.out.println(gameState.turn());
-        System.out.println(gameState.characters().values().isEmpty());
-        System.out.println(Helpers.canAlwaysStun(gameState.characters().values()).isEmpty());
-        //if (gameState.turn() == 2) {
-            
-        return new MoveAction(id, new Position(50, 50));
-        //}
-        // if (gameState.turn() == 4) {
-        //     // System.out.println(Helpers.canAlwaysStun(gameState.characters().values()).isEmpty());
-        //     return new MoveAction(id, new Position(52, 50));
-        // }
-        // Pair<Character, Integer> closestPair = Helpers.FindNearestZombie(self, gameState.characters().values());
-        // Character closestZombie = closestPair.first;
-        // Position closestZombiePos = closestZombie.position();
-        // int closestZombieDistance = closestPair.second;
-        // MoveAction best = HumanHelpers.EscapeWalk(pos, closestZombiePos, moveActions);
-        // return best;
+        if (gameState.turn() == 4) {
+            return new MoveAction(id, new Position(50, 50));
+        }
+        Pair<Character, Integer> closestPair = Helpers.FindNearestZombie(self, gameState.characters().values());
+        Character closestZombie = closestPair.first;
+        Position closestZombiePos = closestZombie.position();
+        int closestZombieDistance = closestPair.second;
+        MoveAction best = HumanHelpers.EscapeWalk(pos, closestZombiePos, moveActions);
+        return best;
     }
 
     @Override
@@ -88,7 +82,8 @@ public class SuperHuman extends IndividualStrategy {
             case BUILD_BARRICADE:
                 chooseAbilityAction = HumanHelpers.SuperBuild(gameState, abilityActions);
             case HEAL:
-                chooseAbilityAction = HumanHelpers.Heal(gameState, abilityActions);
+                return null;
+            // chooseAbilityAction = HumanHelpers.Heal(gameState, abilityActions);
         }
         return chooseAbilityAction;
     }
