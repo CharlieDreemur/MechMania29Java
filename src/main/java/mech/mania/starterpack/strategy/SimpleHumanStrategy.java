@@ -23,7 +23,7 @@ public class SimpleHumanStrategy extends Strategy {
     ) {
         // Selecting character classes following a specific distribution
         return Map.of(
-                CharacterClassType.MARKSMAN, 5,
+                CharacterClassType.MARKSMAN, 6,
                 CharacterClassType.MEDIC, 4,
                 CharacterClassType.TRACEUR, 4,
                 CharacterClassType.DEMOLITIONIST, 2
