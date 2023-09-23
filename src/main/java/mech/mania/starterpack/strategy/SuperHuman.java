@@ -65,7 +65,7 @@ public class SuperHuman extends IndividualStrategy {
             case 26:
                 return new MoveAction(id, new Position(44, 69));
             case 28:
-                return new MoveAction(id, new Position(41,69));
+                return new MoveAction(id, new Position(41, 69));
             case 30:
                 return new MoveAction(id, new Position(41, 72));
             case 32:
@@ -209,7 +209,7 @@ public class SuperHuman extends IndividualStrategy {
             case 170:
                 return new MoveAction(id, new Position(15, 89));
             case 172:
-                return new MoveAction(id, new Position(18, 89)); 
+                return new MoveAction(id, new Position(18, 89));
             case 174:
                 return new MoveAction(id, new Position(19, 91));
             case 176:
@@ -238,8 +238,14 @@ public class SuperHuman extends IndividualStrategy {
                 return new MoveAction(id, new Position(4, 89));
             case 200:
                 return new MoveAction(id, new Position(4, 89));
+            default:
+                Pair<Character, Integer> closestPair = Helpers.FindNearestZombie(self, gameState.characters().values());
+                Character closestZombie = closestPair.first;
+                Position closestZombiePos = closestZombie.position();
+                int closestZombieDistance = closestPair.second;
+                MoveAction best = HumanHelpers.EscapeWalk(pos, closestZombiePos, moveActions);
+                return best;
         }
-        default
 
     }
 
@@ -285,8 +291,7 @@ public class SuperHuman extends IndividualStrategy {
             case BUILD_BARRICADE:
                 chooseAbilityAction = HumanHelpers.SuperBuild(gameState, abilityActions);
             case HEAL:
-                return null;
-            // chooseAbilityAction = HumanHelpers.Heal(gameState, abilityActions);
+                chooseAbilityAction = HumanHelpers.Heal(gameState, abilityActions);
         }
         return chooseAbilityAction;
     }
