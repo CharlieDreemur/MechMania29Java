@@ -16,6 +16,7 @@ import java.util.*;
  */
 public class NaiveHumanStrategy extends Strategy {
     NaiveHuman human = new NaiveHuman();
+    NaiveBuilder builder = new NaiveBuilder();
 
     @Override
     public Map<CharacterClassType, Integer> decideCharacterClasses(
@@ -25,9 +26,9 @@ public class NaiveHumanStrategy extends Strategy {
         // Selecting character classes following a specific distribution
         return Map.of(
                 CharacterClassType.MARKSMAN, 5,
-                CharacterClassType.MEDIC, 4,
+                CharacterClassType.MEDIC, 5,
                 CharacterClassType.TRACEUR, 5,
-                CharacterClassType.DEMOLITIONIST, 2);
+                CharacterClassType.DEMOLITIONIST, 1);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class NaiveHumanStrategy extends Strategy {
         for (Map.Entry<String, List<AbilityAction>> entry : possibleAbilities.entrySet()) {
             String characterId = entry.getKey();
             List<AbilityAction> abilities = entry.getValue();
-            AbilityAction abilityAction = human.Ability(characterId, gameState, abilities);
+            AbilityAction abilityAction = builder.Ability(characterId, gameState, abilities);
             if (abilityAction != null) choices.add(abilityAction);
         }
 

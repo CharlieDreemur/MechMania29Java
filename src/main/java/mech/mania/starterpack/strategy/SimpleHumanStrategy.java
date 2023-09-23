@@ -149,7 +149,6 @@ public class SimpleHumanStrategy extends Strategy {
                         leastHealth = health;
                     }
                 }
-
                 choices.add(humanTarget);
             }
         }
