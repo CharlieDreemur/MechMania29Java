@@ -4,13 +4,14 @@ import mech.mania.starterpack.game.util.Position;
 import mech.mania.starterpack.game.terrain.Terrain;
 import mech.mania.starterpack.game.GameState;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Comparator;
 import java.util.Set;
+import mech.mania.starterpack.game.character.MoveAction;
+
 import java.util.List;
 import java.util.Collections;
 
@@ -47,23 +48,47 @@ public class AstarStrategy {
 
     public int getPathCost(GameState gameState, Position a, Position b) {
         Terrain terrain = getTerrainAtPosition(gameState, b);
-    
+
         if (terrain == null) {
-            return 1;  // If there's no specific terrain, assume it's an empty field.
+            return 1; // If there's no specific terrain, assume it's an empty field.
         }
-        
+
         if (terrain.health() <= 0) {
-            return Integer.MAX_VALUE;  // water's durability is -1 or any other impassable terrain.
+            return Integer.MAX_VALUE; // water's durability is -1 or any other impassable terrain.
         }
-    
-        // The cost to destroy the obstacle is equal to its health since each attack (turn) decrements by 1.
-        int terrainDestructionCost = terrain.health();  
-        
-        // This time, we don't need to multiply by any factor, since the cost directly corresponds to the number of turns.
-        return 1 + terrainDestructionCost;  
+
+        // The cost to destroy the obstacle is equal to its health since each attack
+        // (turn) decrements by 1.
+        int terrainDestructionCost = terrain.health();
+
+        // This time, we don't need to multiply by any factor, since the cost directly
+        // corresponds to the number of turns.
+        return 1 + terrainDestructionCost;
     }
 
-    public List<Position> getPath(GameState gameState, Position a, Position b) { // if cannot arrive b, check if neighbor can arrive
+    public MoveAction getBestMoveAction(GameState gameState, Position a, Position b,
+            List<MoveAction> possibleMoveActions, int speed) {
+        List<Position> path = getPath(gameState, a, b);
+        MoveAction moveChoice = possibleMoveActions.get(0);
+        int moveDistance = Integer.MAX_VALUE;
+        if (!path.isEmpty() && path.size() > 1) { // Check if pathToHuman has more than just the starting
+
+            // Determine how many steps the zombie should ideally take
+            int steps = Math.min(path.size() - 1, speed); // 5 or less if the list is smaller
+            Position nextStep = path.get(steps); // Get the position after the desired number of steps
+            for (MoveAction move : possibleMoveActions) {
+                int distance = Helpers.ManhattonDistanceFunction(move.destination(), nextStep);
+                if (distance < moveDistance) {
+                    moveDistance = distance;
+                    moveChoice = move;
+                }
+            }
+        }
+        return moveChoice;
+    }
+
+    public List<Position> getPath(GameState gameState, Position a, Position b) { // if cannot arrive b, check if
+                                                                                 // neighbor can arrive
         Set<Position> closedSet = new HashSet<>();
         PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingInt(node -> node.f));
 
@@ -87,7 +112,7 @@ public class AstarStrategy {
                 int tentativeG = currentNode.g + getPathCost(gameState, currentNode.position, neighbor);
 
                 // Guard against integer overflow
-                if(tentativeG < 0) { // If overflow occurred, the sum will be negative due to wrap-around
+                if (tentativeG < 0) { // If overflow occurred, the sum will be negative due to wrap-around
                     tentativeG = Integer.MAX_VALUE;
                 }
                 Node neighborNode = new Node(neighbor, currentNode, tentativeG, getPathDistance(neighbor, b));
@@ -99,10 +124,10 @@ public class AstarStrategy {
                         break;
                     }
                 }
-                
+
                 if (shouldContinue) {
                     continue;
-                }  
+                }
 
                 openSet.add(neighborNode);
             }
@@ -130,9 +155,8 @@ public class AstarStrategy {
                 new Position(position.x() - 1, position.y()),
                 new Position(position.x() + 1, position.y()),
                 new Position(position.x(), position.y() - 1),
-                new Position(position.x(), position.y() + 1)
-        );
-        
+                new Position(position.x(), position.y() + 1));
+
         List<Position> validNeighbors = new ArrayList<>();
 
         for (Position neighbor : potentialNeighbors) {
