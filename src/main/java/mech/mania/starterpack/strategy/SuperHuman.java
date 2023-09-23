@@ -45,51 +45,51 @@ public class SuperHuman extends IndividualStrategy {
             case 6:
                 return new MoveAction(id, new Position(50, 45));
             case 8:
-                return new MoveAction(id, new Position(50, 43));
+                return new MoveAction(id, new Position(50, 48));
             case 10:
                 return new MoveAction(id, new Position(50, 51));
             case 12:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(50, 54));
             case 14:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(50, 57));
             case 16:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(50, 60));
             case 18:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(50, 63));
             case 20:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(50, 66));
             case 22:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(47, 69));
             case 24:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(44, 69));
             case 26:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(41,69));
             case 28:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(41, 72));
             case 30:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(41, 75));
             case 32:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(41, 78));
             case 34:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(38, 78));
             case 36:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(35, 78));
             case 38:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(32, 78));
             case 40:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(29, 78));
             case 42:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(26, 78));
             case 44:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(25, 80));
             case 46:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(25, 83));
             case 48:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(25, 86));
             case 50:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(22, 86));
             case 52:
-                return new MoveAction(id, new Position(50, 51));
+                return new MoveAction(id, new Position(22, 89));
             case 54:
                 return new MoveAction(id, new Position(50, 51));
             case 56:
