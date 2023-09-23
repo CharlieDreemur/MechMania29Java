@@ -49,7 +49,7 @@ public class HumanHelpers {
         int closestZombieDistance = Integer.MAX_VALUE;
         // Find the closest zombie
         for (Character c : gameState.characters().values()) {
-            if (!c.zombie()) {
+            if (!c.isZombie()) {
                 continue;  // Ignore fellow humans
             }
             int distance = Math.abs(c.position().x() - selfPos.x()) +
