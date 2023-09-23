@@ -11,10 +11,15 @@ import mech.mania.starterpack.game.character.action.AttackActionType;
 import mech.mania.starterpack.game.character.action.CharacterClassType;
 import mech.mania.starterpack.game.util.Position;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * A simple human which runs away from zombies
  */
-public class NaiveZombie extends IndividualStrategy {
+public class AstarZombie extends IndividualStrategy {
 
     @Override
     public void Init(String id, GameState gameState) {
@@ -31,17 +36,30 @@ public class NaiveZombie extends IndividualStrategy {
         Character closestHuman = closestPair.first;
         Position closestHumanPos = closestHuman.position();
         int closestHumanDistance = closestPair.second;
+
+        AstarStrategy astar = new AstarStrategy();
+
         // System.out.println(closestHumanPos);
         // System.out.println(closestHumanDistance);
-        //Choose thee move that gets us closest to the human
+
+        // Use A* to find a path from currentPos to closestHumanPos
+        List<Position> pathToHuman = astar.getPath(gameState, pos, closestHumanPos);
+
         int moveDistance = Integer.MAX_VALUE;
         MoveAction moveChoice = moveActions.get(0);
-        for (MoveAction m : moveActions) {
-            int distance = Helpers.ManhattonDistanceFunction(m.destination(), closestHumanPos);
+        if (!pathToHuman.isEmpty() && pathToHuman.size() > 1) { // Check if pathToHuman has more than just the starting
+                                                                // point
+            // Determine how many steps the zombie should ideally take
+            int steps = Math.min(pathToHuman.size() - 1, 5); // 5 or less if the list is smaller
+            Position nextStep = pathToHuman.get(steps); // Get the position after the desired number of steps
 
-            if (distance < moveDistance) {
-                moveDistance = distance;
-                moveChoice = m;
+            for (MoveAction move : moveActions) {
+
+                int distance = Helpers.ManhattonDistanceFunction(move.destination(), nextStep);
+                if (distance < moveDistance) {
+                    moveDistance = distance;
+                    moveChoice = move;
+                }
             }
         }
         return moveChoice;
@@ -66,13 +84,14 @@ public class NaiveZombie extends IndividualStrategy {
                 }
             }
         }
-        //if no human can be attack, attack any terrain within one attack range
+        // if no human can be attack, attack any terrain within one attack range
         if (closestTarget == null) {
             for (AttackAction a : attackActions) {
                 if (a.type() == AttackActionType.TERRAIN) {
                     Position attackeePos = gameState.terrains().get(a.attackingId()).position();
                     int distance = Helpers.ChebyshevDistanceFunction(attackeePos, pos);
-                    if (distance <= 1) closestTarget = a;
+                    if (distance <= 1)
+                        closestTarget = a;
                 }
             }
         }
