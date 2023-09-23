@@ -18,6 +18,7 @@ import mech.mania.starterpack.game.character.action.CharacterClassType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+
 //All needs add obstacle detection
 public class Helpers {
     public static int ManhattonDistanceFunction(
@@ -130,7 +131,17 @@ public class Helpers {
         }
         return _allZombieDist;
     }
-    
+
+    public static List<AbilityAction> FindBuildPosition(List<AbilityAction> abilities, List<Position> pos) {
+        List<AbilityAction> result = new ArrayList<AbilityAction>();
+        for (AbilityAction ability : abilities) {
+            if(pos.contains(ability.positionalTarget())){
+                result.add(ability);
+            }
+        }
+        return result;
+    }
+
     public static List<Pair<Character, Integer>> FindAllHumans(Character _zombie, Collection<Character> _charList) {
         List<Pair<Character, Integer>> _allHumanDist = null;
         for (Character c : _charList) {
@@ -184,11 +195,11 @@ public class Helpers {
                     continue;
                 } else {
                     return Collections.emptyList();
-                    //return stunList;
+                    // return stunList;
                 }
             }
         }
-        //return stunList;
+        // return stunList;
         return Collections.emptyList();
     }
     // step 0 : List zombieList; //for (Character c : _charList) {if zombie() add to
