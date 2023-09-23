@@ -27,25 +27,15 @@ public class AstarZombie extends IndividualStrategy {
     }
 
     @Override
-    public MoveAction Move(GameState gameState, List<MoveAction> moveActions) {
+    public MoveAction Move(String id, GameState gameState, List<MoveAction> moveActions) {
+        Init(id, gameState);
         if (moveActions.isEmpty()) {
             return null;
         }
-        Position closestHumanPos = new Position(114514, 114514);
-        int closestHumanDistance = Integer.MAX_VALUE;
-
-        for (Character c : gameState.characters().values()) {
-            if (c.zombie()) {
-                continue;
-            }
-            // System.out.println("c.position:"+c.position());
-            int distance = Helpers.ManhattonDistanceFunction(c.position(), closestHumanPos);
-            // System.out.println("distance:"+distance);
-            if (distance < closestHumanDistance) {
-                closestHumanPos = c.position();
-                closestHumanDistance = distance;
-            }
-        }
+        Pair<Character, Integer> closestPair = Helpers.FindNearestHuman(self, gameState.characters().values());
+        Character closestHuman = closestPair.first;
+        Position closestHumanPos = closestHuman.position();
+        int closestHumanDistance = closestPair.second;
 
         AstarStrategy astar = new AstarStrategy();
 
@@ -55,11 +45,10 @@ public class AstarZombie extends IndividualStrategy {
         // Use A* to find a path from currentPos to closestHumanPos
         List<Position> pathToHuman = astar.getPath(gameState, pos, closestHumanPos);
 
-
-
         int moveDistance = Integer.MAX_VALUE;
         MoveAction moveChoice = moveActions.get(0);
-        if (!pathToHuman.isEmpty() && pathToHuman.size() > 1) { // Check if pathToHuman has more than just the starting point
+        if (!pathToHuman.isEmpty() && pathToHuman.size() > 1) { // Check if pathToHuman has more than just the starting
+                                                                // point
             // Determine how many steps the zombie should ideally take
             int steps = Math.min(pathToHuman.size() - 1, 5); // 5 or less if the list is smaller
             Position nextStep = pathToHuman.get(steps); // Get the position after the desired number of steps
@@ -77,32 +66,43 @@ public class AstarZombie extends IndividualStrategy {
     }
 
     @Override
-    public AttackAction Attack(GameState gameState, List<AttackAction> attackActions) {
+    public AttackAction Attack(String id, GameState gameState, List<AttackAction> attackActions) {
+        Init(id, gameState);
         if (attackActions.isEmpty()) {
             return null;
         }
-        AttackAction closestHuman = null;
-        int closestHumanDistance = 404;
+        AttackAction closestTarget = null;
+        int closestZombieDistance = Integer.MAX_VALUE;
         for (AttackAction a : attackActions) {
             if (a.type() == AttackActionType.CHARACTER) {
                 Position attackeePos = gameState.characters().get(a.attackingId()).position();
                 int distance = Helpers.ManhattonDistanceFunction(attackeePos, pos);
 
-                if (distance < closestHumanDistance) {
-                    closestHuman = a;
-                    closestHumanDistance = distance;
+                if (distance < closestZombieDistance) {
+                    closestTarget = a;
+                    closestZombieDistance = distance;
                 }
             }
         }
-
-        if (closestHuman != null) {
-            return closestHuman;
+        // if no human can be attack, attack any terrain within one attack range
+        if (closestTarget == null) {
+            for (AttackAction a : attackActions) {
+                if (a.type() == AttackActionType.TERRAIN) {
+                    Position attackeePos = gameState.terrains().get(a.attackingId()).position();
+                    int distance = Helpers.ChebyshevDistanceFunction(attackeePos, pos);
+                    if (distance <= 1)
+                        closestTarget = a;
+                }
+            }
+        }
+        if (closestTarget != null) {
+            return closestTarget;
         }
         return null;
     }
 
     @Override
-    public AbilityAction Ability(GameState gameState, List<AbilityAction> abilityActions) {
+    public AbilityAction Ability(String id, GameState gameState, List<AbilityAction> abilityActions) {
         return null;
     }
 
