@@ -1,4 +1,6 @@
 package mech.mania.starterpack.strategy;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +16,7 @@ import mech.mania.starterpack.game.character.MoveAction;
 
 public class HumanHelpers {
     public static MoveAction EscapeWalk(Position selfPos, Position enemyPos, List<MoveAction> possibleMoves) {
-        float deltaX = (float)selfPos.x() - enemyPos.x();
+        float deltaX = (float) selfPos.x() - enemyPos.x();
         float deltaY = selfPos.y() - enemyPos.y();
 
         double length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -50,7 +52,7 @@ public class HumanHelpers {
         // Find the closest zombie
         for (Character c : gameState.characters().values()) {
             if (!c.isZombie()) {
-                continue;  // Ignore fellow humans
+                continue; // Ignore fellow humans
             }
             int distance = Math.abs(c.position().x() - selfPos.x()) +
                     Math.abs(c.position().y() - selfPos.y());
@@ -73,61 +75,81 @@ public class HumanHelpers {
         }
     }
 
-    public static AbilityAction chooseAbility(GameState gameState, List<AbilityAction> abilities) {
-        if (abilities.isEmpty()) {
-            return null;
+    public static AbilityAction Heal(GameState gameState, List<AbilityAction> abilities) {
+        AbilityAction humanTarget = abilities.get(0);
+        int leastHealth = Integer.MAX_VALUE;
+        // Find the human target with the least health to heal
+        for (AbilityAction a : abilities) {
+            int health = gameState.characters().get(a.characterIdTarget()).health();
+            if (health < leastHealth) {
+                humanTarget = a;
+                leastHealth = health;
+            }
         }
-        AbilityActionType type = abilities.get(0).type();
-        switch(type) {
-            case HEAL:
-                AbilityAction humanTarget = abilities.get(0);
-                int leastHealth = Integer.MAX_VALUE;
-                // Find the human target with the least health to heal
-                for (AbilityAction a : abilities) {
-                    int health = gameState.characters().get(a.characterIdTarget()).health();
-                    if (health < leastHealth) {
-                        humanTarget = a;
-                        leastHealth = health;
-                    }
+        return humanTarget;
+    }
+
+    public static AbilityAction SuperBuild(GameState gameState, List<AbilityAction> abilities) {
+        List<Position> positions = new ArrayList<Position>();
+        positions.add(new Position(50, 42));
+        positions.add(new Position(49, 43));
+        positions.add(new Position(50, 43));
+        positions.add(new Position(51, 43));
+        positions.add(new Position(50, 44));
+        positions.add(new Position(50, 56));
+        positions.add(new Position(50, 57));
+        positions.add(new Position(49, 58));
+        positions.add(new Position(50, 58));
+        positions.add(new Position(51, 58));
+        positions.add(new Position(24, 80));
+        positions.add(new Position(25, 80));
+        positions.add(new Position(26, 80));
+        positions.add(new Position(24, 81));
+        positions.add(new Position(25, 81));
+        for (AbilityAction possible : abilities) {
+            for (Position pos : positions) {
+                if (possible.positionalTarget().equals(pos)) {
+                    return possible;
                 }
-                return humanTarget;
-
-
-            case BUILD_BARRICADE:
-                AbilityAction builderTarget = abilities.get(0);
-                Character builder = gameState.characters().get(builderTarget.executingCharacterId());
-                Character zombie = Helpers.FindNearestZombie(builder, gameState.characters().values()).first;
-                
-                float dx = (float)builder.position().x() - zombie.position().x();
-                float dy = builder.position().y() - zombie.position().y();
-                double length = Math.sqrt(dx * dx + dy * dy);
-                double unitX = dx / length;
-                double unitY = dy / length;
-
-                double reverseUX = -unitX;
-                double reverseUY = -unitY;
-                double maxDotProduct = Double.NEGATIVE_INFINITY;
-                    for (AbilityAction possible : abilities) {
-            // Calculate the vector from the current position to the future position
-                    Position futureDest = possible.positionalTarget();
-                    float dex = futureDest.x() - builder.position().x();
-                    float dey = futureDest.y() - builder.position().y();
-                    // Calculate the dot product between the unit vector and the position vector
-                    double dotProduct = dex * reverseUX + dey * reverseUY;
-
-                    // Check if this position goes further along the unit vector
-                    if (dotProduct > maxDotProduct) {
-                        maxDotProduct = dotProduct;
-                        builderTarget = possible;
-                    }
-                }
-
-                //public static Pair<Character, Integer> FindNearestZombie(Character _human, Collection<Character> _charList)
-                // Position builderPosition = gameState.characters().get(positionTarget.executingCharacterId()).position();
-                // Position tmp = 
-                return builderTarget;
+            }
         }
         return null;
-
     }
+
+    public static AbilityAction Build(GameState gameState, List<AbilityAction> abilities) {
+        AbilityAction builderTarget = abilities.get(0);
+        Character builder = gameState.characters().get(builderTarget.executingCharacterId());
+        Character zombie = Helpers.FindNearestZombie(builder, gameState.characters().values()).first;
+        float dx = (float) builder.position().x() - zombie.position().x();
+        float dy = builder.position().y() - zombie.position().y();
+        double length = Math.sqrt(dx * dx + dy * dy);
+        double unitX = dx / length;
+        double unitY = dy / length;
+
+        double reverseUX = -unitX;
+        double reverseUY = -unitY;
+        double maxDotProduct = Double.NEGATIVE_INFINITY;
+        for (AbilityAction possible : abilities) {
+            // Calculate the vector from the current position to the future position
+            Position futureDest = possible.positionalTarget();
+            float dex = futureDest.x() - builder.position().x();
+            float dey = futureDest.y() - builder.position().y();
+            // Calculate the dot product between the unit vector and the position vector
+            double dotProduct = dex * reverseUX + dey * reverseUY;
+
+            // Check if this position goes further along the unit vector
+            if (dotProduct > maxDotProduct) {
+                maxDotProduct = dotProduct;
+                builderTarget = possible;
+            }
+        }
+
+        // public static Pair<Character, Integer> FindNearestZombie(Character _human,
+        // Collection<Character> _charList)
+        // Position builderPosition =
+        // gameState.characters().get(positionTarget.executingCharacterId()).position();
+        // Position tmp =
+        return builderTarget;
+    }
+
 }

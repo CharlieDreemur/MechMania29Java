@@ -1,16 +1,18 @@
 package mech.mania.starterpack.strategy;
 
-import java.util.List;
+import java.util.*;
 
 import mech.mania.starterpack.game.GameState;
-import mech.mania.starterpack.game.character.MoveAction;
+import mech.mania.starterpack.game.character.Character;
 import mech.mania.starterpack.game.character.action.AbilityAction;
+import mech.mania.starterpack.game.character.action.AbilityActionType;
 import mech.mania.starterpack.game.character.action.AttackAction;
 import mech.mania.starterpack.game.character.action.AttackActionType;
 import mech.mania.starterpack.game.util.Position;
-import mech.mania.starterpack.game.character.Character;
+import mech.mania.starterpack.game.character.MoveAction;
 
-public class NaiveBuilder extends IndividualStrategy {
+public class SuperHuman extends IndividualStrategy {
+
     @Override
     public void Init(String id, GameState gameState) {
         super.Init(id, gameState);
@@ -21,8 +23,13 @@ public class NaiveBuilder extends IndividualStrategy {
             List<MoveAction> moveActions) {
         Init(id, gameState);
         // Handle the case where there is no move to be made, such as when stunned
+        if (self.classType == CharacterClassType.)
         if (moveActions.isEmpty()) {
             return null;
+        }
+        System.out.println(gameState.turn());
+        if (gameState.turn() == 4) {
+            return new MoveAction(id, new Position(50, 50));
         }
         Pair<Character, Integer> closestPair = Helpers.FindNearestZombie(self, gameState.characters().values());
         Character closestZombie = closestPair.first;
@@ -46,9 +53,8 @@ public class NaiveBuilder extends IndividualStrategy {
         for (AttackAction a : attackActions) {
             if (a.type() == AttackActionType.CHARACTER) {
                 Position attackeePos = gameState.characters().get(a.attackingId()).position();
-
-                int distance = Math.abs(attackeePos.x() - pos.x()) +
-                        Math.abs(attackeePos.y() - pos.y());
+                // Distance between the attackpos and self
+                int distance = Helpers.ManhattonDistanceFunction(attackeePos, pos);
 
                 if (distance < closestZombieDistance) {
                     closestZombie = a;
@@ -65,9 +71,19 @@ public class NaiveBuilder extends IndividualStrategy {
 
     @Override
     public AbilityAction Ability(String id, GameState gameState, List<AbilityAction> abilityActions) {
-        // TODO Auto-generated method stub
-        AbilityAction best = HumanHelpers.Build(gameState, abilityActions);
-        return best;
+        Init(id, gameState);
+        if (abilityActions.isEmpty()) {
+            return null;
+        }
+        AbilityActionType type = abilityActions.get(0).type();
+        AbilityAction chooseAbilityAction = abilityActions.get(0);
+        switch (type) {
+            case BUILD_BARRICADE:
+                chooseAbilityAction = HumanHelpers.SuperBuild(gameState, abilityActions);
+            case HEAL:
+                chooseAbilityAction = HumanHelpers.Heal(gameState, abilityActions);
+        }
+        return chooseAbilityAction;
     }
 
 }

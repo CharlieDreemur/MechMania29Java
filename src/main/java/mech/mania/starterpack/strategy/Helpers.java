@@ -15,7 +15,8 @@ import mech.mania.starterpack.strategy.Pair;
 import mech.mania.starterpack.game.terrain.Terrain;
 import mech.mania.starterpack.game.GameState;
 import mech.mania.starterpack.game.character.action.CharacterClassType;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 //All needs add obstacle detection
 public class Helpers {
     public static int ManhattonDistanceFunction(
@@ -188,6 +189,13 @@ public class Helpers {
         }
         return stunList;
     }
+    public static List<Position> startingBuild = 
+    new ArrayList<>(Arrays.asList(
+        new Position(46,50),
+        new Position(47,50),
+        new Position(47,49),
+        new Position(47,51)
+    ));
     // step 0 : List zombieList; //for (Character c : _charList) {if zombie() add to
     // zombieList}
     // List humanList//all non-normal humans
