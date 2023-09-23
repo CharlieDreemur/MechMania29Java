@@ -11,20 +11,88 @@ import mech.mania.starterpack.game.character.action.AttackActionType;
 import mech.mania.starterpack.game.character.action.CharacterClassType;
 import mech.mania.starterpack.game.util.Position;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-
 /**
  * A simple human which runs away from zombies
  */
 public class AstarZombie extends IndividualStrategy {
 
+   // This map keeps track of how many zombies are targeting a specific human
+    private static Map<String, Integer> humanTargetCount = new HashMap<>();
+
     @Override
     public void Init(String id, GameState gameState) {
         super.Init(id, gameState);
+        // Reset human target counts at the beginning of each zombie's turn
+        humanTargetCount.clear();
     }
+
+    private Character getOptimalTarget(GameState gameState) {
+        List<Pair<Character, Integer>> allPairs = new ArrayList<>();
+        for (Character character : gameState.characters().values()) {
+            if (!character.id().equals(self.id()) && !character.zombie()) {
+                int distance = Helpers.ManhattonDistanceFunction(character.position(), pos);
+                // Introduce a weight to factor in how many zombies are already targeting this human
+                int weightedDistance = distance + (humanTargetCount.getOrDefault(character.id(), 0) * 10); // Increasing the weight for humans already targeted by more zombies
+                allPairs.add(new Pair<>(character, weightedDistance));
+            }
+        }
+
+        allPairs.sort(Comparator.comparingInt(pair -> pair.second));
+
+        Pair<Character, Integer> bestPair = allPairs.get(0);
+        String humanId = bestPair.first.id();
+        humanTargetCount.put(humanId, humanTargetCount.getOrDefault(humanId, 0) + 1);
+
+        return bestPair.first;
+    }
+
+    @Override
+    public AttackAction Attack(String id, GameState gameState, List<AttackAction> attackActions) {
+        Init(id, gameState);
+        if (attackActions.isEmpty()) {
+            return null;
+        }
+        AttackAction bestTarget = null;
+        int bestScore = Integer.MIN_VALUE;
+
+        for (AttackAction a : attackActions) {
+            if (a.type() == AttackActionType.CHARACTER) {
+                Position attackeePos = gameState.characters().get(a.attackingId()).position();
+                int distance = Helpers.ManhattonDistanceFunction(attackeePos, pos);
+                int nearbyZombies = 0;
+
+                // Count the number of zombies nearby the potential target
+                for (Character character : gameState.characters().values()) {
+                    if (character.zombie() && Helpers.ManhattonDistanceFunction(character.position(), attackeePos) <= 5) {
+                        nearbyZombies++;
+                    }
+                }
+
+                // Favor attacking humans which are surrounded by more zombies
+                int score = nearbyZombies - distance;
+
+                if (score > bestScore) {
+                    bestTarget = a;
+                    bestScore = score;
+                }
+            }
+        }
+
+        if (bestTarget == null) {
+            for (AttackAction a : attackActions) {
+                if (a.type() == AttackActionType.TERRAIN) {
+                    Position attackeePos = gameState.terrains().get(a.attackingId()).position();
+                    int distance = Helpers.ChebyshevDistanceFunction(attackeePos, pos);
+                    if (distance <= 1)
+                        bestTarget = a;
+                }
+            }
+        }
+
+        return bestTarget;
+    }
+
+
 
     @Override
     public MoveAction Move(String id, GameState gameState, List<MoveAction> moveActions) {
@@ -33,7 +101,7 @@ public class AstarZombie extends IndividualStrategy {
             return null;
         }
         Pair<Character, Integer> closestPair = Helpers.FindNearestHuman(self, gameState.characters().values());
-        Character closestHuman = closestPair.first;
+        Character closestHuman = getOptimalTarget(gameState);
         Position closestHumanPos = closestHuman.position();
         int closestHumanDistance = closestPair.second;
 
@@ -65,41 +133,41 @@ public class AstarZombie extends IndividualStrategy {
         return moveChoice;
     }
 
-    @Override
-    public AttackAction Attack(String id, GameState gameState, List<AttackAction> attackActions) {
-        Init(id, gameState);
-        if (attackActions.isEmpty()) {
-            return null;
-        }
-        AttackAction closestTarget = null;
-        int closestZombieDistance = Integer.MAX_VALUE;
-        for (AttackAction a : attackActions) {
-            if (a.type() == AttackActionType.CHARACTER) {
-                Position attackeePos = gameState.characters().get(a.attackingId()).position();
-                int distance = Helpers.ManhattonDistanceFunction(attackeePos, pos);
+    // @Override
+    // public AttackAction Attack(String id, GameState gameState, List<AttackAction> attackActions) {
+    //     Init(id, gameState);
+    //     if (attackActions.isEmpty()) {
+    //         return null;
+    //     }
+    //     AttackAction closestTarget = null;
+    //     int closestZombieDistance = Integer.MAX_VALUE;
+    //     for (AttackAction a : attackActions) {
+    //         if (a.type() == AttackActionType.CHARACTER) {
+    //             Position attackeePos = gameState.characters().get(a.attackingId()).position();
+    //             int distance = Helpers.ManhattonDistanceFunction(attackeePos, pos);
 
-                if (distance < closestZombieDistance) {
-                    closestTarget = a;
-                    closestZombieDistance = distance;
-                }
-            }
-        }
-        // if no human can be attack, attack any terrain within one attack range
-        if (closestTarget == null) {
-            for (AttackAction a : attackActions) {
-                if (a.type() == AttackActionType.TERRAIN) {
-                    Position attackeePos = gameState.terrains().get(a.attackingId()).position();
-                    int distance = Helpers.ChebyshevDistanceFunction(attackeePos, pos);
-                    if (distance <= 1)
-                        closestTarget = a;
-                }
-            }
-        }
-        if (closestTarget != null) {
-            return closestTarget;
-        }
-        return null;
-    }
+    //             if (distance < closestZombieDistance) {
+    //                 closestTarget = a;
+    //                 closestZombieDistance = distance;
+    //             }
+    //         }
+    //     }
+    //     // if no human can be attack, attack any terrain within one attack range
+    //     if (closestTarget == null) {
+    //         for (AttackAction a : attackActions) {
+    //             if (a.type() == AttackActionType.TERRAIN) {
+    //                 Position attackeePos = gameState.terrains().get(a.attackingId()).position();
+    //                 int distance = Helpers.ChebyshevDistanceFunction(attackeePos, pos);
+    //                 if (distance <= 1)
+    //                     closestTarget = a;
+    //             }
+    //         }
+    //     }
+    //     if (closestTarget != null) {
+    //         return closestTarget;
+    //     }
+    //     return null;
+    // }
 
     @Override
     public AbilityAction Ability(String id, GameState gameState, List<AbilityAction> abilityActions) {
