@@ -13,7 +13,7 @@ public class HumanHelpers {
     public static MoveAction EscapeWalk(Position selfPos, Position enemyPos, List<MoveAction> possibleMoves) {
         float deltaX = (float)selfPos.x() - enemyPos.x();
         float deltaY = selfPos.y() - enemyPos.y();
-        System.out.println(selfPos.x() - enemyPos.x());
+        // System.out.println(selfPos.x() - enemyPos.x());
 
         double length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         double unitX = deltaX / length;
