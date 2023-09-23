@@ -16,6 +16,7 @@ import java.util.*;
  */
 public class NaiveHumanStrategy extends Strategy {
     NaiveHuman human = new NaiveHuman();
+    NaiveBuilder builder = new NaiveBuilder();
 
     @Override
     public Map<CharacterClassType, Integer> decideCharacterClasses(
@@ -38,8 +39,17 @@ public class NaiveHumanStrategy extends Strategy {
         for (Map.Entry<String, List<MoveAction>> entry : possibleMoves.entrySet()) {
             String characterId = entry.getKey();
             List<MoveAction> moves = entry.getValue();
-            MoveAction moveChoice = human.Move(characterId, gameState, moves);
-            if (moveChoice != null) choices.add(moveChoice);
+            Character character = gameState.characters().get(characterId);
+            MoveAction moveChoice = null;
+            switch (character.classType()) {
+                case BUILDER:
+                    moveChoice = builder.Move(characterId, gameState, moves);
+                default:
+                    moveChoice = human.Move(characterId, gameState, moves);
+            }
+
+            if (moveChoice != null)
+                choices.add(moveChoice);
         }
 
         return choices;
@@ -54,8 +64,17 @@ public class NaiveHumanStrategy extends Strategy {
         for (Map.Entry<String, List<AttackAction>> entry : possibleAttacks.entrySet()) {
             String characterId = entry.getKey();
             List<AttackAction> attacks = entry.getValue();
-            AttackAction attackChoice = human.Attack(characterId, gameState, attacks);
-            if (attackChoice != null) choices.add(attackChoice);
+            Character character = gameState.characters().get(characterId);
+            AttackAction attackChoice = null;
+            switch (character.classType()) {
+                case BUILDER:
+                    attackChoice = builder.Attack(characterId, gameState, attacks);
+                    break;
+                default:
+                    attackChoice = human.Attack(characterId, gameState, attacks);
+            }
+            if (attackChoice != null)
+                choices.add(attackChoice);
         }
         return choices;
     }
@@ -69,8 +88,17 @@ public class NaiveHumanStrategy extends Strategy {
         for (Map.Entry<String, List<AbilityAction>> entry : possibleAbilities.entrySet()) {
             String characterId = entry.getKey();
             List<AbilityAction> abilities = entry.getValue();
-            AbilityAction abilityAction = human.Ability(characterId, gameState, abilities);
-            if (abilityAction != null) choices.add(abilityAction);
+            Character character = gameState.characters().get(characterId);
+            AbilityAction abilityAction = null;
+            switch (character.classType()) {
+                case BUILDER:
+                    abilityAction = builder.Ability(characterId, gameState, abilities);
+                    break;
+                default:
+                    abilityAction = human.Ability(characterId, gameState, abilities);
+            }
+            if (abilityAction != null)
+                choices.add(abilityAction);
         }
 
         return choices;

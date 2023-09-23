@@ -8,6 +8,7 @@ import mech.mania.starterpack.game.character.action.AbilityAction;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import mech.mania.starterpack.strategy.Pair;
@@ -141,9 +142,10 @@ public class Helpers {
         return _allHumanDist;
     }
 
-    public static boolean canAlwaysStun(Collection<Character> _charList) {
+    public static List<Map<Character, Character>> canAlwaysStun(Collection<Character> _charList) {
         List<Character> zombieList = new ArrayList<Character>(null);
         List<Character> humanList = new ArrayList<Character>(null);
+        List<Map<Character, Character>> stunList = new ArrayList<Map<Character, Character>>(null);
         // Init
         for (Character c : _charList) {
             if (c.zombie()) {
@@ -152,34 +154,39 @@ public class Helpers {
                 humanList.add(c);
             }
         }
-        List<Character> attackersList = new ArrayList<Character>(null);
+        List<Character> attackHumansList = new ArrayList<Character>(null);
         for (int i = 0; i < 3; i++) {
-            List<Character> zombieList1 = new ArrayList<Character>(zombieList);
+            Map<Character, Character> stunMap = new HashMap<Character, Character>(null);
+            List<Character> attackZombieList = new ArrayList<Character>(zombieList);
             for (Character human : humanList) {
+                if (attackHumansList.contains(human)) {
+                    continue;
+                }
                 boolean isZombieInRange = false;
-                Character farestZombieInAttackRange = null;
+                Character farestTargetZombie = null;
                 int farestDistance = 0;
                 for (Pair<Character, Integer> currentZombieTarget : FindAllZombies(human, zombieList)) {
-                    if (currentZombieTarget.second < GetSpeed(human) + GetAttackRange(human)) {
+                    if (currentZombieTarget.second < (i + 1) * GetSpeed(human) + GetAttackRange(human)) {
                         isZombieInRange = true;
-                        if (farestDistance <= currentZombieTarget.second) {
+                        if (farestDistance >= currentZombieTarget.second) {
                             farestDistance = currentZombieTarget.second;
-                            farestZombieInAttackRange = currentZombieTarget.first;
+                            farestTargetZombie = currentZombieTarget.first;
                         }
                     }
                 }
                 if (isZombieInRange) {
-                    attackersList.add(human);
-                    zombieList1.remove(farestZombieInAttackRange);
+                    attackHumansList.add(human);
+                    attackZombieList.remove(farestTargetZombie);
+                    stunMap.put(human, farestTargetZombie);
                 }
-                if (zombieList1.isEmpty()) {
+                if (attackZombieList.isEmpty()) {
                     continue;
                 } else {
-                    return false;
+                    return null;
                 }
             }
         }
-        return false;
+        return stunList;
     }
     // step 0 : List zombieList; //for (Character c : _charList) {if zombie() add to
     // zombieList}
