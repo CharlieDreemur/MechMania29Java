@@ -91,23 +91,25 @@ public class NaiveHuman extends IndividualStrategy {
     @Override
     public AbilityAction Ability(GameState gameState, List<AbilityAction> abilityActions) {
         // Handle the case where there is no ability to be made, such as when stunned
-        if (abilityActions.isEmpty()) {
-            return null;
-        }
-        AbilityAction humanTarget = abilityActions.get(0);
-        int leastHealth = Integer.MAX_VALUE;
+        // if (abilityActions.isEmpty()) {
+        //     return null;
+        // }
+        // AbilityAction humanTarget = abilityActions.get(0);
+        // int leastHealth = Integer.MAX_VALUE;
 
-        // Find the human target with the least health to heal
-        for (AbilityAction a : abilityActions) {
-            int health = gameState.characters().get(a.characterIdTarget()).health();
+        // // Find the human target with the least health to heal
+        // for (AbilityAction a : abilityActions) {
+        //     int health = gameState.characters().get(a.characterIdTarget()).health();
 
-            if (health < leastHealth) {
-                humanTarget = a;
-                leastHealth = health;
-            }
-        }
+        //     if (health < leastHealth) {
+        //         humanTarget = a;
+        //         leastHealth = health;
+        //     }
+        // }
 
-        return humanTarget;
+        // return humanTarget;
+        AbilityAction best = HumanHelpers.chooseAbility(gameState, abilityActions);
+        return best;
     }
 
 }

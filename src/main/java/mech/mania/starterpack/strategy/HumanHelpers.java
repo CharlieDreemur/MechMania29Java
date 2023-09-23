@@ -5,6 +5,8 @@ import java.util.Map;
 import mech.mania.starterpack.game.GameState;
 import mech.mania.starterpack.game.util.Position;
 import mech.mania.starterpack.strategy.Helpers;
+import mech.mania.starterpack.game.character.action.AbilityAction;
+import mech.mania.starterpack.game.character.action.AbilityActionType;
 import mech.mania.starterpack.game.character.action.CharacterClassType;
 import mech.mania.starterpack.game.character.Character;
 import mech.mania.starterpack.game.character.MoveAction;
@@ -13,7 +15,6 @@ public class HumanHelpers {
     public static MoveAction EscapeWalk(Position selfPos, Position enemyPos, List<MoveAction> possibleMoves) {
         float deltaX = (float)selfPos.x() - enemyPos.x();
         float deltaY = selfPos.y() - enemyPos.y();
-        System.out.println(selfPos.x() - enemyPos.x());
 
         double length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         double unitX = deltaX / length;
@@ -68,5 +69,37 @@ public class HumanHelpers {
         } else {
             return false;
         }
+    }
+
+    public static AbilityAction chooseAbility(GameState gameState, List<AbilityAction> abilities) {
+        if (abilities.isEmpty()) {
+            return null;
+        }
+        AbilityActionType type = abilities.get(0).type();
+        switch(type) {
+            case HEAL:
+                AbilityAction humanTarget = abilities.get(0);
+                int leastHealth = Integer.MAX_VALUE;
+                // Find the human target with the least health to heal
+                for (AbilityAction a : abilities) {
+                    int health = gameState.characters().get(a.characterIdTarget()).health();
+                    if (health < leastHealth) {
+                        humanTarget = a;
+                        leastHealth = health;
+                    }
+                }
+                return humanTarget;
+
+
+            case BUILD_BARRICADE:
+                AbilityAction positionTarget = abilities.get(0);
+                Position builderPosition = gameState.characters().get(positionTarget.executingCharacterId()).position();
+                Position tmp = 
+
+
+                return positionTarget;
+        }
+        return null;
+
     }
 }

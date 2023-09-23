@@ -26,7 +26,7 @@ public class NaiveHumanStrategy extends Strategy {
         return Map.of(
                 CharacterClassType.MARKSMAN, 5,
                 CharacterClassType.MEDIC, 4,
-                CharacterClassType.TRACEUR, 5,
+                CharacterClassType.BUILDER, 1,
                 CharacterClassType.DEMOLITIONIST, 2);
     }
 
