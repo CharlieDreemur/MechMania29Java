@@ -26,8 +26,8 @@ public class SuperHumanStrategy extends Strategy {
         return Map.of(
                 CharacterClassType.MARKSMAN, 5,
                 CharacterClassType.MEDIC, 5,
-                CharacterClassType.TRACEUR, 5,
-                CharacterClassType.DEMOLITIONIST, 1);
+                CharacterClassType.TRACEUR, 1,
+                CharacterClassType.BUILDER, 5);
     }
 
     @Override
