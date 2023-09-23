@@ -76,18 +76,38 @@ public class HumanHelpers {
     }
 
     public static AbilityAction Heal(GameState gameState, List<AbilityAction> abilities) {
-        AbilityAction humanTarget = abilities.get(0);
+        AbilityAction humanTarget = null; // Initialize to null
         int leastHealth = Integer.MAX_VALUE;
+    
         // Find the human target with the least health to heal
         for (AbilityAction a : abilities) {
-            int health = gameState.characters().get(a.characterIdTarget()).health();
-            if (health < leastHealth) {
-                humanTarget = a;
-                leastHealth = health;
+            String characterIdTarget = a.characterIdTarget();
+    
+            // Check if the character exists in the gameState
+            if (gameState.characters().containsKey(characterIdTarget)) {
+                // Get the character
+                Character character = gameState.characters().get(characterIdTarget);
+                
+                // Check if the character's health is not null
+                if (character != null) {
+                    int health = character.health();
+                    
+                    if (health < leastHealth) {
+                        humanTarget = a;
+                        leastHealth = health;
+                    }
+                }
             }
         }
+    
         return humanTarget;
     }
+    
+    
+    
+    
+    
+    
 
     public static AbilityAction SuperBuild(GameState gameState, List<AbilityAction> abilities) {
         List<Position> positions = new ArrayList<Position>();
