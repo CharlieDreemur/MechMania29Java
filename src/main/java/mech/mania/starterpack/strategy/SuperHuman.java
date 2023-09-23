@@ -23,7 +23,7 @@ public class SuperHuman extends IndividualStrategy {
             List<MoveAction> moveActions) {
         Init(id, gameState);
         // Handle the case where there is no move to be made, such as when stunned
-        if (self.classType() == )
+        if (self.classType == CharacterClassType.)
         if (moveActions.isEmpty()) {
             return null;
         }
