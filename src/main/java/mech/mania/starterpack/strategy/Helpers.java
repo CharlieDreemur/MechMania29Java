@@ -134,8 +134,7 @@ public class Helpers {
                 }
             }
             if(zombie_in_range) {AttackerList.add(human);zombieList3.remove(farest_zombie_in_attack_range)}
-        }
-    }
+
     if (zombieList3.empty) return true; else {return false;}
 }
 
