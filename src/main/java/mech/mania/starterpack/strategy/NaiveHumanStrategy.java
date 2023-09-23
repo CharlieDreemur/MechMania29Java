@@ -25,9 +25,9 @@ public class NaiveHumanStrategy extends Strategy {
         // Selecting character classes following a specific distribution
         return Map.of(
                 CharacterClassType.MARKSMAN, 5,
-                CharacterClassType.MEDIC, 4,
+                CharacterClassType.MEDIC, 5,
                 CharacterClassType.TRACEUR, 5,
-                CharacterClassType.DEMOLITIONIST, 2);
+                CharacterClassType.DEMOLITIONIST, 1);
     }
 
     @Override
