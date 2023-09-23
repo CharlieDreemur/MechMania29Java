@@ -78,6 +78,11 @@ public class HumanHelpers {
         int leastHealth = Integer.MAX_VALUE;
         // Find the human target with the least health to heal
         for (AbilityAction a : abilities) {
+
+            if (gameState.characters().get(a.characterIdTarget()) == null) {
+                continue;
+            }
+
             int health = gameState.characters().get(a.characterIdTarget()).health();
             if (health < leastHealth) {
                 humanTarget = a;
