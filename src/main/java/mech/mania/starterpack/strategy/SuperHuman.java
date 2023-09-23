@@ -5,6 +5,7 @@ import java.util.*;
 import mech.mania.starterpack.game.GameState;
 import mech.mania.starterpack.game.character.Character;
 import mech.mania.starterpack.game.character.action.AbilityAction;
+import mech.mania.starterpack.game.character.action.AbilityActionType;
 import mech.mania.starterpack.game.character.action.AttackAction;
 import mech.mania.starterpack.game.character.action.AttackActionType;
 import mech.mania.starterpack.game.util.Position;
@@ -47,7 +48,7 @@ public class SuperHuman extends IndividualStrategy {
         for (AttackAction a : attackActions) {
             if (a.type() == AttackActionType.CHARACTER) {
                 Position attackeePos = gameState.characters().get(a.attackingId()).position();
-                //Distance between the attackpos and self
+                // Distance between the attackpos and self
                 int distance = Helpers.ManhattonDistanceFunction(attackeePos, pos);
 
                 if (distance < closestZombieDistance) {
@@ -66,24 +67,18 @@ public class SuperHuman extends IndividualStrategy {
     @Override
     public AbilityAction Ability(String id, GameState gameState, List<AbilityAction> abilityActions) {
         Init(id, gameState);
-        // Handle the case where there is no ability to be made, such as when stunned
         if (abilityActions.isEmpty()) {
             return null;
         }
-        AbilityAction humanTarget = abilityActions.get(0);
-        int leastHealth = Integer.MAX_VALUE;
-
-        // Find the human target with the least health to heal
-        for (AbilityAction a : abilityActions) {
-            int health = gameState.characters().get(a.characterIdTarget()).health();
-
-            if (health < leastHealth) {
-                humanTarget = a;
-                leastHealth = health;
-            }
+        AbilityActionType type = abilityActions.get(0).type();
+        AbilityAction chooseAbilityAction = abilityActions.get(0);
+        switch (type) {
+            case BUILD_BARRICADE:
+                chooseAbilityAction = HumanHelpers.Build(gameState, abilityActions);
+            case HEAL:
+                chooseAbilityAction = HumanHelpers.Heal(gameState, abilityActions);
         }
-
-        return humanTarget;
+        return chooseAbilityAction;
     }
 
 }
