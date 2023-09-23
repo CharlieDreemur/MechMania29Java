@@ -51,10 +51,10 @@ public class AstarStrategy {
 
         if (terrain == null) {
             // If there's no specific terrain, assume it's an empty field.
-            return 1;
+            return 2;
         }
 
-        return terrain.health() > 0 ? terrain.health() : Integer.MAX_VALUE; // water's durability is -1
+        return terrain.health() > 0 ? terrain.health() * 10 : Integer.MAX_VALUE; // water's durability is -1
 
         // // String terrainType = terrain.get(terrain.id()).type();
         // String terrainType = gameState.terrains().get(terrain.id());
