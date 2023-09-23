@@ -130,7 +130,7 @@ public class Helpers {
         }
         return _allZombieDist;
     }
-
+    
     public static List<Pair<Character, Integer>> FindAllHumans(Character _zombie, Collection<Character> _charList) {
         List<Pair<Character, Integer>> _allHumanDist = null;
         for (Character c : _charList) {
@@ -192,13 +192,6 @@ public class Helpers {
         //return stunList;
         return Collections.emptyList();
     }
-    public static List<Position> startingBuild = 
-    new ArrayList<>(Arrays.asList(
-        new Position(46,50),
-        new Position(47,50),
-        new Position(47,49),
-        new Position(47,51)
-    ));
     // step 0 : List zombieList; //for (Character c : _charList) {if zombie() add to
     // zombieList}
     // List humanList//all non-normal humans
