@@ -17,6 +17,7 @@ import mech.mania.starterpack.game.GameState;
 import mech.mania.starterpack.game.character.action.CharacterClassType;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 //All needs add obstacle detection
 public class Helpers {
     public static int ManhattonDistanceFunction(
@@ -144,9 +145,9 @@ public class Helpers {
     }
 
     public static List<Map<Character, Character>> canAlwaysStun(Collection<Character> _charList) {
-        List<Character> zombieList = new ArrayList<Character>(null);
-        List<Character> humanList = new ArrayList<Character>(null);
-        List<Map<Character, Character>> stunList = new ArrayList<Map<Character, Character>>(null);
+        List<Character> zombieList = new ArrayList<>();
+        List<Character> humanList = new ArrayList<>();
+        List<Map<Character, Character>> stunList = new ArrayList<>();
         // Init
         for (Character c : _charList) {
             if (c.isZombie()) {
@@ -155,9 +156,9 @@ public class Helpers {
                 humanList.add(c);
             }
         }
-        List<Character> attackHumansList = new ArrayList<Character>(null);
+        List<Character> attackHumansList = new ArrayList<Character>();
         for (int i = 0; i < 3; i++) {
-            Map<Character, Character> stunMap = new HashMap<Character, Character>(null);
+            Map<Character, Character> stunMap = new HashMap<Character, Character>();
             List<Character> attackZombieList = new ArrayList<Character>(zombieList);
             for (Character human : humanList) {
                 if (attackHumansList.contains(human)) {
@@ -169,8 +170,8 @@ public class Helpers {
                 for (Pair<Character, Integer> currentZombieTarget : FindAllZombies(human, zombieList)) {
                     if (currentZombieTarget.second < (i + 1) * GetSpeed(human) + GetAttackRange(human)) {
                         isZombieInRange = true;
-                        if (farestDistance >= currentZombieTarget.second) {
-                            farestDistance = currentZombieTarget.second;
+                        if (farestDistance >= (int) currentZombieTarget.second) {
+                            farestDistance = (int) currentZombieTarget.second;
                             farestTargetZombie = currentZombieTarget.first;
                         }
                     }
@@ -183,11 +184,13 @@ public class Helpers {
                 if (attackZombieList.isEmpty()) {
                     continue;
                 } else {
-                    return null;
+                    return Collections.emptyList();
+                    //return stunList;
                 }
             }
         }
-        return stunList;
+        //return stunList;
+        return Collections.emptyList();
     }
     public static List<Position> startingBuild = 
     new ArrayList<>(Arrays.asList(
