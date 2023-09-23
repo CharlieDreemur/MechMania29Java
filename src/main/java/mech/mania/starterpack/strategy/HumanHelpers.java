@@ -92,12 +92,38 @@ public class HumanHelpers {
 
 
             case BUILD_BARRICADE:
-                AbilityAction positionTarget = abilities.get(0);
+                AbilityAction builderTarget = abilities.get(0);
+                Character builder = gameState.characters().get(builderTarget.executingCharacterId());
+                Character zombie = Helpers.FindNearestZombie(builder, gameState.characters().values()).first;
+                
+                float dx = (float)builder.position().x() - zombie.position().x();
+                float dy = builder.position().y() - zombie.position().y();
+                double length = Math.sqrt(dx * dx + dy * dy);
+                double unitX = dx / length;
+                double unitY = dy / length;
+
+                double reverseUX = -unitX;
+                double reverseUY = -unitY;
+                double maxDotProduct = Double.NEGATIVE_INFINITY;
+                    for (AbilityAction possible : abilities) {
+            // Calculate the vector from the current position to the future position
+                    Position futureDest = possible.positionalTarget();
+                    float dex = futureDest.x() - builder.position().x();
+                    float dey = futureDest.y() - builder.position().y();
+                    // Calculate the dot product between the unit vector and the position vector
+                    double dotProduct = dex * reverseUX + dey * reverseUY;
+
+                    // Check if this position goes further along the unit vector
+                    if (dotProduct > maxDotProduct) {
+                        maxDotProduct = dotProduct;
+                        builderTarget = possible;
+                    }
+                }
+
+                //public static Pair<Character, Integer> FindNearestZombie(Character _human, Collection<Character> _charList)
                 // Position builderPosition = gameState.characters().get(positionTarget.executingCharacterId()).position();
                 // Position tmp = 
-
-
-                return positionTarget;
+                return builderTarget;
         }
         return null;
 
