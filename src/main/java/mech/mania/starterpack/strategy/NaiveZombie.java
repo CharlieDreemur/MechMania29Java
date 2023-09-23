@@ -1,6 +1,6 @@
 package mech.mania.starterpack.strategy;
 
-import java.util.List;
+import java.util.*;
 
 import mech.mania.starterpack.game.GameState;
 import mech.mania.starterpack.game.character.Character;
@@ -26,28 +26,29 @@ public class NaiveZombie extends IndividualStrategy {
         if (moveActions.isEmpty()) {
             return null;
         }
-        Position closestHumanPos = pos;
+        Position closestHumanPos = new Position(114514, 114514);
         int closestHumanDistance = Integer.MAX_VALUE;
 
         for (Character c : gameState.characters().values()) {
-            if (c.isZombie()) {
+            if (c.zombie()) {
                 continue;
             }
-
-            int distance = Math.abs(c.position().x() - pos.y())
-                    + Math.abs(c.position().x() - pos.y());
-
+            // System.out.println("c.position:"+c.position());
+            int distance = Helpers.ManhattonDistanceFunction(c.position(), closestHumanPos);
+            // System.out.println("distance:"+distance);
             if (distance < closestHumanDistance) {
                 closestHumanPos = c.position();
                 closestHumanDistance = distance;
             }
         }
 
+        // System.out.println(closestHumanPos);
+        // System.out.println(closestHumanDistance);
+
         int moveDistance = Integer.MAX_VALUE;
         MoveAction moveChoice = moveActions.get(0);
         for (MoveAction m : moveActions) {
-            int distance = Math.abs(m.destination().x() - closestHumanPos.x())
-                    + Math.abs(m.destination().y() - closestHumanPos.y());
+            int distance = Helpers.ManhattonDistanceFunction(m.destination(), closestHumanPos);
 
             if (distance < moveDistance) {
                 moveDistance = distance;
@@ -63,12 +64,11 @@ public class NaiveZombie extends IndividualStrategy {
             return null;
         }
         AttackAction closestHuman = null;
-        int closestZombieDistance = 404;
+        int closestZombieDistance = Integer.MAX_VALUE;
         for (AttackAction a : attackActions) {
             if (a.type() == AttackActionType.CHARACTER) {
                 Position attackeePos = gameState.characters().get(a.attackingId()).position();
-                int distance = Math.abs(attackeePos.x() - pos.x())
-                        + Math.abs(attackeePos.y() - pos.y());
+                int distance = Helpers.ManhattonDistanceFunction(attackeePos, pos);
 
                 if (distance < closestZombieDistance) {
                     closestHuman = a;

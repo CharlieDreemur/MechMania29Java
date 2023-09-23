@@ -23,8 +23,8 @@ public class SimpleHumanStrategy extends Strategy {
     ) {
         // Selecting character classes following a specific distribution
         return Map.of(
-                CharacterClassType.MARKSMAN, 6,
-                CharacterClassType.MEDIC, 4,
+                CharacterClassType.MARKSMAN, 5,
+                CharacterClassType.MEDIC, 5,
                 CharacterClassType.TRACEUR, 4,
                 CharacterClassType.DEMOLITIONIST, 2
         );
@@ -49,7 +49,7 @@ public class SimpleHumanStrategy extends Strategy {
 
                 // Find the closest zombie
                 for (Character c : gameState.characters().values()) {
-                    if (!c.isZombie()) {
+                    if (!c.zombie()) {
                         continue;  // Ignore fellow humans
                     }
 

@@ -18,16 +18,17 @@ import java.util.Map;
  */
 public class NaiveZombieStrategy extends Strategy {
     NaiveZombie zombie = new NaiveZombie();
+
     @Override
-    public Map<CharacterClassType, Integer> decideCharacterClasses(List<CharacterClassType> possibleClasses, int numToPick, int maxPerSameClass) {
+    public Map<CharacterClassType, Integer> decideCharacterClasses(List<CharacterClassType> possibleClasses,
+            int numToPick, int maxPerSameClass) {
         return null;
     }
 
     @Override
     public List<MoveAction> decideMoves(
             Map<String, List<MoveAction>> possibleMoves,
-            GameState gameState
-    ) {
+            GameState gameState) {
         List<MoveAction> choices = new ArrayList<>();
 
         for (Map.Entry<String, List<MoveAction>> entry : possibleMoves.entrySet()) {
@@ -35,7 +36,8 @@ public class NaiveZombieStrategy extends Strategy {
             List<MoveAction> moves = entry.getValue();
             zombie.Init(characterId, gameState);
             MoveAction moveChoice = zombie.Move(gameState, moves);
-            if (moveChoice != null) choices.add(moveChoice);
+            if (moveChoice != null)
+                choices.add(moveChoice);
         }
 
         return choices;
@@ -44,22 +46,24 @@ public class NaiveZombieStrategy extends Strategy {
     @Override
     public List<AttackAction> decideAttacks(
             Map<String, List<AttackAction>> possibleAttacks,
-            GameState gameState
-    ) {
+            GameState gameState) {
         List<AttackAction> choices = new ArrayList<>();
 
         for (Map.Entry<String, List<AttackAction>> entry : possibleAttacks.entrySet()) {
             String characterId = entry.getKey();
             List<AttackAction> attacks = entry.getValue();
+            zombie.Init(characterId, gameState);
             AttackAction attackChoice = zombie.Attack(gameState, attacks);
-            if (attackChoice != null) choices.add(attackChoice);
+            if (attackChoice != null)
+                choices.add(attackChoice);
         }
 
         return choices;
     }
 
     @Override
-    public List<AbilityAction> decideAbilities(Map<String, List<AbilityAction>> possibleAbilities, GameState gameState) {
+    public List<AbilityAction> decideAbilities(Map<String, List<AbilityAction>> possibleAbilities,
+            GameState gameState) {
         return null;
     }
 }
