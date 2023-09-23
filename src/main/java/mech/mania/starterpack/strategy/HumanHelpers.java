@@ -106,6 +106,7 @@ public class HumanHelpers {
         positions.add(new Position(25, 81));
         for (AbilityAction possible : abilities) {
             for (Position pos : positions) {
+                System.out.println("Possible: " + possible.positionalTarget().toString() + " Pos: " + pos.toString() + "\n");
                 if (possible.positionalTarget().equals(pos)) {
                     return possible;
                 }

@@ -27,13 +27,12 @@ public class SuperHuman extends IndividualStrategy {
         if (moveActions.isEmpty()) {
             return null;
         }
-        AstarStrategy astar = new AstarStrategy();
+        //AstarStrategy astar = new AstarStrategy();
         // List<Position> positions = new ArrayList<>();
         // positions.add(new Position(50, 50));
         // positions.add(new Position(50, 46));
         // positions.add(new Position(50, 50));
-
-        switch (gameState.turn()) {
+        switch (gameState.turn()){
             case 2:
                 return new MoveAction(id, new Position(50, 50));
             // astar.getBestMoveAction(gameState, pos, new Position(50, 50), moveActions,
@@ -83,43 +82,10 @@ public class SuperHuman extends IndividualStrategy {
             case 44:
                 return new MoveAction(id, new Position(25, 80));
             case 46:
-                return new MoveAction(id, new Position(25, 83));
-            case 48:
-                return new MoveAction(id, new Position(25, 86));
-            case 50:
-                return new MoveAction(id, new Position(22, 86));
-            case 52:
-                return new MoveAction(id, new Position(22, 89));
-            case 54:
-                return new MoveAction(id, new Position(50, 51));
-            case 56:
-                return new MoveAction(id, new Position(50, 51));
-            case 58:
-                return new MoveAction(id, new Position(50, 51));
-            case 60:
-                return new MoveAction(id, new Position(50, 51));
-            case 62:
-                return new MoveAction(id, new Position(50, 51));
-            case 64:
-                return new MoveAction(id, new Position(50, 51));
-            case 66:
-                return new MoveAction(id, new Position(50, 51));
-            case 68:
-                return new MoveAction(id, new Position(50, 51));
-            case 70:
-                return new MoveAction(id, new Position(50, 51));
-            case 72:
-                return new MoveAction(id, new Position(50, 51));
-            case 74:
-                return new MoveAction(id, new Position(50, 51));
-            case 76:
-                return new MoveAction(id, new Position(50, 51));
-            case 78:
-                return new MoveAction(id, new Position(50, 51));
+
             default:
                 return moveActions.get(0);
         }
-
     }
 
     @Override
@@ -164,7 +130,7 @@ public class SuperHuman extends IndividualStrategy {
             case BUILD_BARRICADE:
                 chooseAbilityAction = HumanHelpers.SuperBuild(gameState, abilityActions);
             case HEAL:
-                return null;
+                chooseAbilityAction = HumanHelpers.Heal(gameState, abilityActions);
             // chooseAbilityAction = HumanHelpers.Heal(gameState, abilityActions);
         }
         return chooseAbilityAction;
