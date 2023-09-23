@@ -25,23 +25,10 @@ public class NaiveHuman extends IndividualStrategy {
         if (moveActions.isEmpty()) {
             return null;
         }
-        Position closestZombiePos = new Position(1135, 1135);
-        int closestZombieDistance = Integer.MAX_VALUE;
-
-        // Find the closest zombie
-        for (Character c : gameState.characters().values()) {
-            if (!c.zombie()) {
-                continue; // Ignore fellow humans
-            }
-
-            int distance = Helpers.ManhattonDistanceFunction(c.position(), closestZombiePos);
-
-            if (distance < closestZombieDistance) {
-                closestZombiePos = c.position();
-                closestZombieDistance = distance;
-            }
-        }
-
+        Pair<Character, Integer> closestPair = Helpers.FindNearestZombie(self, gameState.characters().values());
+        Character closestZombie = closestPair.first;
+        Position closestZombiePos = closestZombie.position();
+        int closestZombieDistance = closestPair.second;
         MoveAction best = HumanHelpers.EscapeWalk(pos, closestZombiePos, moveActions);
         return best;
     }
@@ -60,9 +47,8 @@ public class NaiveHuman extends IndividualStrategy {
         for (AttackAction a : attackActions) {
             if (a.type() == AttackActionType.CHARACTER) {
                 Position attackeePos = gameState.characters().get(a.attackingId()).position();
-
-                int distance = Math.abs(attackeePos.x() - pos.x()) +
-                        Math.abs(attackeePos.y() - pos.y());
+                //Distance between the attackpos and self
+                int distance = Helpers.ManhattonDistanceFunction(attackeePos, pos);
 
                 if (distance < closestZombieDistance) {
                     closestZombie = a;
