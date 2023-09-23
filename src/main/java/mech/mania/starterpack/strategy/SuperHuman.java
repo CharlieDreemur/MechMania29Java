@@ -23,20 +23,103 @@ public class SuperHuman extends IndividualStrategy {
             List<MoveAction> moveActions) {
         Init(id, gameState);
         // Handle the case where there is no move to be made, such as when stunned
-        if (self.classType == CharacterClassType.)
+        // if (self.classType == CharacterClassType.)
         if (moveActions.isEmpty()) {
             return null;
         }
-        System.out.println(gameState.turn());
-        if (gameState.turn() == 4) {
-            return new MoveAction(id, new Position(50, 50));
+        AstarStrategy astar = new AstarStrategy();
+        // List<Position> positions = new ArrayList<>();
+        // positions.add(new Position(50, 50));
+        // positions.add(new Position(50, 46));
+        // positions.add(new Position(50, 50));
+
+        switch (gameState.turn()) {
+            case 2:
+                return new MoveAction(id, new Position(50, 50));
+            // astar.getBestMoveAction(gameState, pos, new Position(50, 50), moveActions,
+            // 3);
+            case 4:
+                return new MoveAction(id, new Position(50, 47));
+            // astar.getBestMoveAction(gameState, pos, new Position(50, 47), moveActions,
+            // 3);
+            case 6:
+                return new MoveAction(id, new Position(50, 45));
+            case 8:
+                return new MoveAction(id, new Position(50, 43));
+            case 10:
+                return new MoveAction(id, new Position(50, 51));
+            case 12:
+                return new MoveAction(id, new Position(50, 51));
+            case 14:
+                return new MoveAction(id, new Position(50, 51));
+            case 16:
+                return new MoveAction(id, new Position(50, 51));
+            case 18:
+                return new MoveAction(id, new Position(50, 51));
+            case 20:
+                return new MoveAction(id, new Position(50, 51));
+            case 22:
+                return new MoveAction(id, new Position(50, 51));
+            case 24:
+                return new MoveAction(id, new Position(50, 51));
+            case 26:
+                return new MoveAction(id, new Position(50, 51));
+            case 28:
+                return new MoveAction(id, new Position(50, 51));
+            case 30:
+                return new MoveAction(id, new Position(50, 51));
+            case 32:
+                return new MoveAction(id, new Position(50, 51));
+            case 34:
+                return new MoveAction(id, new Position(50, 51));
+            case 36:
+                return new MoveAction(id, new Position(50, 51));
+            case 38:
+                return new MoveAction(id, new Position(50, 51));
+            case 40:
+                return new MoveAction(id, new Position(50, 51));
+            case 42:
+                return new MoveAction(id, new Position(50, 51));
+            case 44:
+                return new MoveAction(id, new Position(50, 51));
+            case 46:
+                return new MoveAction(id, new Position(50, 51));
+            case 48:
+                return new MoveAction(id, new Position(50, 51));
+            case 50:
+                return new MoveAction(id, new Position(50, 51));
+            case 52:
+                return new MoveAction(id, new Position(50, 51));
+            case 54:
+                return new MoveAction(id, new Position(50, 51));
+            case 56:
+                return new MoveAction(id, new Position(50, 51));
+            case 58:
+                return new MoveAction(id, new Position(50, 51));
+            case 60:
+                return new MoveAction(id, new Position(50, 51));
+            case 62:
+                return new MoveAction(id, new Position(50, 51));
+            case 64:
+                return new MoveAction(id, new Position(50, 51));
+            case 66:
+                return new MoveAction(id, new Position(50, 51));
+            case 68:
+                return new MoveAction(id, new Position(50, 51));
+            case 70:
+                return new MoveAction(id, new Position(50, 51));
+            case 72:
+                return new MoveAction(id, new Position(50, 51));
+            case 74:
+                return new MoveAction(id, new Position(50, 51));
+            case 76:
+                return new MoveAction(id, new Position(50, 51));
+            case 78:
+                return new MoveAction(id, new Position(50, 51));
+            default:
+                return moveActions.get(0);
         }
-        Pair<Character, Integer> closestPair = Helpers.FindNearestZombie(self, gameState.characters().values());
-        Character closestZombie = closestPair.first;
-        Position closestZombiePos = closestZombie.position();
-        int closestZombieDistance = closestPair.second;
-        MoveAction best = HumanHelpers.EscapeWalk(pos, closestZombiePos, moveActions);
-        return best;
+
     }
 
     @Override
@@ -81,7 +164,8 @@ public class SuperHuman extends IndividualStrategy {
             case BUILD_BARRICADE:
                 chooseAbilityAction = HumanHelpers.SuperBuild(gameState, abilityActions);
             case HEAL:
-                chooseAbilityAction = HumanHelpers.Heal(gameState, abilityActions);
+                return null;
+            // chooseAbilityAction = HumanHelpers.Heal(gameState, abilityActions);
         }
         return chooseAbilityAction;
     }
