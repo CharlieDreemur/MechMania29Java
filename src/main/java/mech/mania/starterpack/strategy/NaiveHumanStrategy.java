@@ -16,6 +16,7 @@ import java.util.*;
  */
 public class NaiveHumanStrategy extends Strategy {
     NaiveHuman human = new NaiveHuman();
+    NaiveBuilder builder = new NaiveBuilder();
 
     @Override
     public Map<CharacterClassType, Integer> decideCharacterClasses(
@@ -69,7 +70,7 @@ public class NaiveHumanStrategy extends Strategy {
         for (Map.Entry<String, List<AbilityAction>> entry : possibleAbilities.entrySet()) {
             String characterId = entry.getKey();
             List<AbilityAction> abilities = entry.getValue();
-            AbilityAction abilityAction = human.Ability(characterId, gameState, abilities);
+            AbilityAction abilityAction = builder.Ability(characterId, gameState, abilities);
             if (abilityAction != null) choices.add(abilityAction);
         }
 
