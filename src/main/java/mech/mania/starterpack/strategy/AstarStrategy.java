@@ -46,6 +46,25 @@ public class AstarStrategy {
         return null; // No terrain at the given position
     }
 
+    public int getPathCostIgnoredDestory(GameState gameState, Position a, Position b) {
+        Terrain terrain = getTerrainAtPosition(gameState, b);
+
+        if (terrain == null) {
+            return 1; // If there's no specific terrain, assume it's an empty field.
+        }
+
+        if (terrain.health() <= 0) {
+            return Integer.MAX_VALUE; // water's durability is -1 or any other impassable terrain.
+        }
+
+        // The cost of destroying the obstacle is too high
+        int terrainDestructionCost = 1000000;
+
+        // This time, we don't need to multiply by any factor, since the cost directly
+        // corresponds to the number of turns.
+        return 1 + terrainDestructionCost;
+    }
+
     public int getPathCost(GameState gameState, Position a, Position b) {
         Terrain terrain = getTerrainAtPosition(gameState, b);
 
@@ -68,7 +87,7 @@ public class AstarStrategy {
 
     public MoveAction getBestMoveAction(GameState gameState, Position a, Position b,
             List<MoveAction> possibleMoveActions, int speed) {
-        List<Position> path = getPath(gameState, a, b);
+        List<Position> path = getPathIgnoredDestory(gameState, a, b);
         MoveAction moveChoice = possibleMoveActions.get(0);
         int moveDistance = Integer.MAX_VALUE;
         if (!path.isEmpty() && path.size() > 1) { // Check if pathToHuman has more than just the starting
@@ -87,8 +106,61 @@ public class AstarStrategy {
         return moveChoice;
     }
 
-    public List<Position> getPath(GameState gameState, Position a, Position b) { // if cannot arrive b, check if
-                                                                                 // neighbor can arrive
+    public List<Position> getPathIgnoredDestory(GameState gameState, Position a, Position b) { // if cannot
+                                                                                               // arrive b, check
+                                                                                               // if
+        // neighbor can arrive
+        Set<Position> closedSet = new HashSet<>();
+        PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingInt(node -> node.f));
+
+        Node startNode = new Node(a, null, 0, getPathDistance(a, b));
+        openSet.add(startNode);
+
+        while (!openSet.isEmpty()) {
+            Node currentNode = openSet.poll();
+
+            if (currentNode.position.equals(b)) {
+                return constructPath(currentNode);
+            }
+
+            closedSet.add(currentNode.position);
+
+            for (Position neighbor : getNeighbors(gameState, currentNode.position)) {
+                if (closedSet.contains(neighbor)) {
+                    continue;
+                }
+
+                int tentativeG = currentNode.g + getPathCostIgnoredDestory(gameState, currentNode.position, neighbor);
+
+                // Guard against integer overflow
+                if (tentativeG < 0) { // If overflow occurred, the sum will be negative due to wrap-around
+                    tentativeG = Integer.MAX_VALUE;
+                }
+                Node neighborNode = new Node(neighbor, currentNode, tentativeG, getPathDistance(neighbor, b));
+
+                boolean shouldContinue = false;
+                for (Node node : openSet) {
+                    if (node.position.equals(neighbor) && tentativeG >= node.g) {
+                        shouldContinue = true;
+                        break;
+                    }
+                }
+
+                if (shouldContinue) {
+                    continue;
+                }
+
+                openSet.add(neighborNode);
+            }
+        }
+
+        return new ArrayList<>(); // Return an empty list if no path is found
+    }
+
+    public List<Position> getPath(GameState gameState, Position a, Position b) { // if cannot
+                                                                                 // arrive b, check
+                                                                                 // if
+        // neighbor can arrive
         Set<Position> closedSet = new HashSet<>();
         PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingInt(node -> node.f));
 
