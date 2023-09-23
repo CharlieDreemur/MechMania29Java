@@ -6,6 +6,7 @@ import mech.mania.starterpack.game.util.Position;
 import java.lang.Math;
 import mech.mania.starterpack.game.character.action.AbilityAction;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -101,8 +102,17 @@ public class Helpers {
         return _allHumanDist;
     }
 
-    // public static boolean canAlwaysStun(Collection<Character> _charList){
-    // for (Character c:_charList)
+    public static boolean canAlwaysStun(Collection<Character> _charList) {
+        List<Character> zombieList = new ArrayList<Character>(null);
+        for (Character c : _charList) {
+            if (c.zombie()) {
+                zombieList.add(c);
+            } else {
+
+            }
+        }
+        return false;
+    }
     // step 0 : List zombieList; //for (Character c : _charList) {if zombie() add to
     // zombieList}
     // List humanList//all non-normal humans
