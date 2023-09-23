@@ -9,25 +9,20 @@ import mech.mania.starterpack.game.character.action.AttackActionType;
 import mech.mania.starterpack.game.character.action.CharacterClassType;
 import mech.mania.starterpack.game.util.Position;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
- * A simple human which runs away from zombies
+ * SimpleHumanStrategy implementation for bot decision-making.
  */
-public class NaiveHumanStrategy extends Strategy {
-    NaiveHuman human = new NaiveHuman();
+public class AstarZombieStrategy extends Strategy {
+    AstarZombie zombie = new AstarZombie();
 
     @Override
-    public Map<CharacterClassType, Integer> decideCharacterClasses(
-            List<CharacterClassType> possibleClasses,
-            int numToPick,
-            int maxPerSameClass) {
-        // Selecting character classes following a specific distribution
-        return Map.of(
-                CharacterClassType.MARKSMAN, 5,
-                CharacterClassType.MEDIC, 4,
-                CharacterClassType.BUILDER, 1,
-                CharacterClassType.DEMOLITIONIST, 2);
+    public Map<CharacterClassType, Integer> decideCharacterClasses(List<CharacterClassType> possibleClasses,
+            int numToPick, int maxPerSameClass) {
+        return null;
     }
 
     @Override
@@ -35,11 +30,13 @@ public class NaiveHumanStrategy extends Strategy {
             Map<String, List<MoveAction>> possibleMoves,
             GameState gameState) {
         List<MoveAction> choices = new ArrayList<>();
+
         for (Map.Entry<String, List<MoveAction>> entry : possibleMoves.entrySet()) {
             String characterId = entry.getKey();
             List<MoveAction> moves = entry.getValue();
-            MoveAction moveChoice = human.Move(characterId, gameState, moves);
-            if (moveChoice != null) choices.add(moveChoice);
+            MoveAction moveChoice = zombie.Move(characterId, gameState, moves);
+            if (moveChoice != null)
+                choices.add(moveChoice);
         }
 
         return choices;
@@ -54,25 +51,17 @@ public class NaiveHumanStrategy extends Strategy {
         for (Map.Entry<String, List<AttackAction>> entry : possibleAttacks.entrySet()) {
             String characterId = entry.getKey();
             List<AttackAction> attacks = entry.getValue();
-            AttackAction attackChoice = human.Attack(characterId, gameState, attacks);
-            if (attackChoice != null) choices.add(attackChoice);
+            AttackAction attackChoice = zombie.Attack(characterId, gameState, attacks);
+            if (attackChoice != null)
+                choices.add(attackChoice);
         }
+
         return choices;
     }
 
     @Override
-    public List<AbilityAction> decideAbilities(
-            Map<String, List<AbilityAction>> possibleAbilities,
+    public List<AbilityAction> decideAbilities(Map<String, List<AbilityAction>> possibleAbilities,
             GameState gameState) {
-        List<AbilityAction> choices = new ArrayList<>();
-
-        for (Map.Entry<String, List<AbilityAction>> entry : possibleAbilities.entrySet()) {
-            String characterId = entry.getKey();
-            List<AbilityAction> abilities = entry.getValue();
-            AbilityAction abilityAction = human.Ability(characterId, gameState, abilities);
-            if (abilityAction != null) choices.add(abilityAction);
-        }
-
-        return choices;
+        return null;
     }
 }

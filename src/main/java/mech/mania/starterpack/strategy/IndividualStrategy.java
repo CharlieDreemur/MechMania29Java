@@ -17,7 +17,7 @@ public abstract class IndividualStrategy {
         this.self = gameState.characters().get(id);
         this.pos = self.position();
     }
-    public abstract MoveAction Move(GameState gameState, List<MoveAction> moveActions);
-    public abstract AttackAction Attack(GameState gameState, List<AttackAction> attackActions);
-    public abstract AbilityAction Ability(GameState gameState, List<AbilityAction> abilityActions);
+    public abstract MoveAction Move(String id, GameState gameState, List<MoveAction> moveActions);
+    public abstract AttackAction Attack(String id, GameState gameState, List<AttackAction> attackActions);
+    public abstract AbilityAction Ability(String id, GameState gameState, List<AbilityAction> abilityActions);
 }
