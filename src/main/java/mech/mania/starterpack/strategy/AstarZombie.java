@@ -29,7 +29,7 @@ public class AstarZombie extends IndividualStrategy {
     private Character getOptimalTarget(GameState gameState) {
         List<Pair<Character, Integer>> allPairs = new ArrayList<>();
         for (Character character : gameState.characters().values()) {
-            if (!character.id().equals(self.id()) && !character.zombie()) {
+            if (!character.id().equals(self.id()) && !character.isZombie()) {
                 int distance = Helpers.ManhattonDistanceFunction(character.position(), pos);
                 // Introduce a weight to factor in how many zombies are already targeting this human
                 int weightedDistance = distance + (humanTargetCount.getOrDefault(character.id(), 0) * 10); // Increasing the weight for humans already targeted by more zombies
