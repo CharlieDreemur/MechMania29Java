@@ -9,7 +9,7 @@ public class ChooseStrategy {
         if (isZombie) {
              return new AstarZombieStrategy();
          } else {
-             return new NaiveHumanStrategy();
+             return new SuperHumanStrategy();
         }
 
     }

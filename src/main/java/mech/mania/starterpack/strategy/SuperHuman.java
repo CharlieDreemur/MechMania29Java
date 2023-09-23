@@ -23,8 +23,13 @@ public class SuperHuman extends IndividualStrategy {
             List<MoveAction> moveActions) {
         Init(id, gameState);
         // Handle the case where there is no move to be made, such as when stunned
+        if (self.classType() == )
         if (moveActions.isEmpty()) {
             return null;
+        }
+        System.out.println(gameState.turn());
+        if (gameState.turn() == 4) {
+            return new MoveAction(id, new Position(50, 50));
         }
         Pair<Character, Integer> closestPair = Helpers.FindNearestZombie(self, gameState.characters().values());
         Character closestZombie = closestPair.first;
