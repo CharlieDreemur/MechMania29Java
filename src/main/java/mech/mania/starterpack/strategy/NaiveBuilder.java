@@ -66,7 +66,8 @@ public class NaiveBuilder extends IndividualStrategy {
     @Override
     public AbilityAction Ability(String id, GameState gameState, List<AbilityAction> abilityActions) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'Ability'");
+        AbilityAction best = HumanHelpers.chooseAbility(gameState, abilityActions);
+        return best;
     }
 
 }
