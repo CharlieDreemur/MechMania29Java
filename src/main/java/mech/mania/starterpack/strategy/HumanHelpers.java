@@ -1,6 +1,7 @@
 package mech.mania.starterpack.strategy;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import mech.mania.starterpack.game.GameState;
 import mech.mania.starterpack.game.util.Position;
@@ -29,7 +30,8 @@ public class HumanHelpers {
             float dx = futureDest.x() - selfPos.x();
             float dy = futureDest.y() - selfPos.y();
             // Calculate the dot product between the unit vector and the position vector
-            double dotProduct = dx * unitX + dy * unitY;
+            if (futureDest.x() >= 0 && futureDest.x() <= 99 && futureDest.y() >= 0 && futureDest.y() <= 99) {
+                double dotProduct = dx * unitX + dy * unitY;
 
             // Check if this position goes further along the unit vector
             if (dotProduct > maxDotProduct) {
@@ -37,8 +39,8 @@ public class HumanHelpers {
                 furthestPoint = futureDest;
                 best = possible;
             }
+            }
         }
-
         return best;
     }
 
