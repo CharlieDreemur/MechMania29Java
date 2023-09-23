@@ -150,7 +150,6 @@ public class Helpers {
                 _indv_human = new Pair<>(c, ManhattonDistanceFunction(_zombie.position(), c.position()));
                 _allHumanDist.add(_indv_human);
             }
-            ;
         }
         return _allHumanDist;
     }
