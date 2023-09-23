@@ -27,25 +27,13 @@ public class NaiveZombie extends IndividualStrategy {
         if (moveActions.isEmpty()) {
             return null;
         }
-        Position closestHumanPos = new Position(114514, 114514);
-        int closestHumanDistance = Integer.MAX_VALUE;
-
-        for (Character c : gameState.characters().values()) {
-            if (c.zombie()) {
-                continue;
-            }
-            // System.out.println("c.position:"+c.position());
-            int distance = Helpers.ManhattonDistanceFunction(c.position(), closestHumanPos);
-            // System.out.println("distance:"+distance);
-            if (distance < closestHumanDistance) {
-                closestHumanPos = c.position();
-                closestHumanDistance = distance;
-            }
-        }
-
+        Pair<Character, Integer> closestPair = Helpers.FindNearestHuman(self, gameState.characters().values());
+        Character closestHuman = closestPair.first;
+        Position closestHumanPos = closestHuman.position();
+        int closestHumanDistance = closestPair.second;
         // System.out.println(closestHumanPos);
         // System.out.println(closestHumanDistance);
-
+        //Choose thee move that gets us closest to the human
         int moveDistance = Integer.MAX_VALUE;
         MoveAction moveChoice = moveActions.get(0);
         for (MoveAction m : moveActions) {
@@ -65,7 +53,7 @@ public class NaiveZombie extends IndividualStrategy {
         if (attackActions.isEmpty()) {
             return null;
         }
-        AttackAction closestHuman = null;
+        AttackAction closestTarget = null;
         int closestZombieDistance = Integer.MAX_VALUE;
         for (AttackAction a : attackActions) {
             if (a.type() == AttackActionType.CHARACTER) {
@@ -73,14 +61,23 @@ public class NaiveZombie extends IndividualStrategy {
                 int distance = Helpers.ManhattonDistanceFunction(attackeePos, pos);
 
                 if (distance < closestZombieDistance) {
-                    closestHuman = a;
+                    closestTarget = a;
                     closestZombieDistance = distance;
                 }
             }
         }
-
-        if (closestHuman != null) {
-            return closestHuman;
+        //if no human can be attack, attack any terrain within one attack range
+        if (closestTarget == null) {
+            for (AttackAction a : attackActions) {
+                if (a.type() == AttackActionType.TERRAIN) {
+                    Position attackeePos = gameState.terrains().get(a.attackingId()).position();
+                    int distance = Helpers.ChebyshevDistanceFunction(attackeePos, pos);
+                    if (distance <= 1) closestTarget = a;
+                }
+            }
+        }
+        if (closestTarget != null) {
+            return closestTarget;
         }
         return null;
     }

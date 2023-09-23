@@ -5,6 +5,8 @@ import mech.mania.starterpack.game.character.action.AbilityActionType;
 import mech.mania.starterpack.game.util.Position;
 import java.lang.Math;
 import mech.mania.starterpack.game.character.action.AbilityAction;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import mech.mania.starterpack.strategy.Pair;
@@ -38,7 +40,7 @@ public class Helpers {
     }
 
     // Find nearest, returned as map of <people, distance>.
-    public static Pair<Character, Integer> FindNearestZombie(Character _human, List<Character> _charList) {
+    public static Pair<Character, Integer> FindNearestZombie(Character _human, Collection<Character> _charList) {
         int _leastDistance = 200;
         Character nearest = null;
         for (Character c : _charList) {
@@ -54,7 +56,7 @@ public class Helpers {
         return _nearestZombie;
     }
 
-    public static Pair<Character, Integer> FindNearestHuman(Character _zombie, List<Character> _charList) {
+    public static Pair<Character, Integer> FindNearestHuman(Character _zombie, Collection<Character> _charList) {
         int _leastDistance = 200;
         Character nearest = null;
         for (Character c : _charList) {
@@ -69,7 +71,7 @@ public class Helpers {
                 _leastDistance);
         return _nearestHuman;
     }
-    public static List<Pair<Character, Integer>> FindAllZombies(Character _human, List<Character> _charList) {
+    public static List<Pair<Character, Integer>> FindAllZombies(Character _human, Collection<Character> _charList) {
         List<Pair<Character, Integer>> _allZombieDist = null;
         for (Character c : _charList) {
             if(c.zombie()) {
@@ -80,7 +82,7 @@ public class Helpers {
         }
         return _allZombieDist;
     }
-    public static List<Pair<Character, Integer>> FindAllHumans(Character _zombie, List<Character> _charList) {
+    public static List<Pair<Character, Integer>> FindAllHumans(Character _zombie, Collection<Character> _charList) {
         List<Pair<Character, Integer>> _allHumanDist = null;
         for (Character c : _charList) {
             if(!c.zombie()) {
