@@ -22,7 +22,8 @@ public class NaiveZombie extends IndividualStrategy {
     }
 
     @Override
-    public MoveAction Move(GameState gameState, List<MoveAction> moveActions) {
+    public MoveAction Move(String id, GameState gameState, List<MoveAction> moveActions) {
+        Init(id, gameState);
         if (moveActions.isEmpty()) {
             return null;
         }
@@ -59,7 +60,8 @@ public class NaiveZombie extends IndividualStrategy {
     }
 
     @Override
-    public AttackAction Attack(GameState gameState, List<AttackAction> attackActions) {
+    public AttackAction Attack(String id, GameState gameState, List<AttackAction> attackActions) {
+        Init(id, gameState);
         if (attackActions.isEmpty()) {
             return null;
         }
@@ -84,7 +86,7 @@ public class NaiveZombie extends IndividualStrategy {
     }
 
     @Override
-    public AbilityAction Ability(GameState gameState, List<AbilityAction> abilityActions) {
+    public AbilityAction Ability(String id, GameState gameState, List<AbilityAction> abilityActions) {
         return null;
     }
 
