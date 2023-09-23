@@ -18,9 +18,10 @@ public class NaiveHuman extends IndividualStrategy {
     }
 
     @Override
-    public MoveAction Move(GameState gameState,
+    public MoveAction Move(String id, GameState gameState,
             List<MoveAction> moveActions) {
-        // Handle the case where there is no move to be made, such as when stunned
+        Init(id, gameState);
+                // Handle the case where there is no move to be made, such as when stunned
         if (moveActions.isEmpty()) {
             return null;
         }
@@ -41,25 +42,13 @@ public class NaiveHuman extends IndividualStrategy {
             }
         }
 
-        // int moveDistance = -1;
-        // MoveAction moveChoice = moveActions.get(0);
-
-        // // Choose a move action that takes the character further from the closest zombie
-        // for (MoveAction m : moveActions) {
-        //     int distance = Math.abs(m.destination().x() - closestZombiePos.x()) +
-        //             Math.abs(m.destination().y() - closestZombiePos.y());
-
-        //     if (distance > moveDistance) {
-        //         moveDistance = distance;
-        //         moveChoice = m;
-        //     }
-        // }
         MoveAction best = HumanHelpers.EscapeWalk(pos, closestZombiePos, moveActions);
         return best;
     }
 
     @Override
-    public AttackAction Attack(GameState gameState, List<AttackAction> attackActions) {
+    public AttackAction Attack(String id, GameState gameState, List<AttackAction> attackActions) {
+        Init(id, gameState);
         // Handle the case where there is no attack to be made, such as when stunned
         if (attackActions.isEmpty()) {
             return null;
@@ -89,7 +78,8 @@ public class NaiveHuman extends IndividualStrategy {
     }
 
     @Override
-    public AbilityAction Ability(GameState gameState, List<AbilityAction> abilityActions) {
+    public AbilityAction Ability(String id, GameState gameState, List<AbilityAction> abilityActions) {
+        Init(id, gameState);
         // Handle the case where there is no ability to be made, such as when stunned
         if (abilityActions.isEmpty()) {
             return null;

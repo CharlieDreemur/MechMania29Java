@@ -38,8 +38,7 @@ public class NaiveHumanStrategy extends Strategy {
         for (Map.Entry<String, List<MoveAction>> entry : possibleMoves.entrySet()) {
             String characterId = entry.getKey();
             List<MoveAction> moves = entry.getValue();
-            human.Init(characterId, gameState);
-            MoveAction moveChoice = human.Move(gameState, moves);
+            MoveAction moveChoice = human.Move(characterId, gameState, moves);
             if (moveChoice != null) choices.add(moveChoice);
         }
 
@@ -55,8 +54,7 @@ public class NaiveHumanStrategy extends Strategy {
         for (Map.Entry<String, List<AttackAction>> entry : possibleAttacks.entrySet()) {
             String characterId = entry.getKey();
             List<AttackAction> attacks = entry.getValue();
-            human.Init(characterId, gameState);
-            AttackAction attackChoice = human.Attack(gameState, attacks);
+            AttackAction attackChoice = human.Attack(characterId, gameState, attacks);
             if (attackChoice != null) choices.add(attackChoice);
         }
         return choices;
@@ -71,8 +69,7 @@ public class NaiveHumanStrategy extends Strategy {
         for (Map.Entry<String, List<AbilityAction>> entry : possibleAbilities.entrySet()) {
             String characterId = entry.getKey();
             List<AbilityAction> abilities = entry.getValue();
-            human.Init(characterId, gameState);
-            AbilityAction abilityAction = human.Ability(gameState, abilities);
+            AbilityAction abilityAction = human.Ability(characterId, gameState, abilities);
             if (abilityAction != null) choices.add(abilityAction);
         }
 

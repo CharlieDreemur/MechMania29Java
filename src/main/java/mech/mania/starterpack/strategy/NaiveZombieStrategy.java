@@ -34,8 +34,7 @@ public class NaiveZombieStrategy extends Strategy {
         for (Map.Entry<String, List<MoveAction>> entry : possibleMoves.entrySet()) {
             String characterId = entry.getKey();
             List<MoveAction> moves = entry.getValue();
-            zombie.Init(characterId, gameState);
-            MoveAction moveChoice = zombie.Move(gameState, moves);
+            MoveAction moveChoice = zombie.Move(characterId, gameState, moves);
             if (moveChoice != null)
                 choices.add(moveChoice);
         }
@@ -52,8 +51,7 @@ public class NaiveZombieStrategy extends Strategy {
         for (Map.Entry<String, List<AttackAction>> entry : possibleAttacks.entrySet()) {
             String characterId = entry.getKey();
             List<AttackAction> attacks = entry.getValue();
-            zombie.Init(characterId, gameState);
-            AttackAction attackChoice = zombie.Attack(gameState, attacks);
+            AttackAction attackChoice = zombie.Attack(characterId, gameState, attacks);
             if (attackChoice != null)
                 choices.add(attackChoice);
         }
