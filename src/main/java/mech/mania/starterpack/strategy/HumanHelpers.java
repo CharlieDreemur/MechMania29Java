@@ -93,8 +93,8 @@ public class HumanHelpers {
 
             case BUILD_BARRICADE:
                 AbilityAction positionTarget = abilities.get(0);
-                Position builderPosition = gameState.characters().get(positionTarget.executingCharacterId()).position();
-                Position tmp = 
+                // Position builderPosition = gameState.characters().get(positionTarget.executingCharacterId()).position();
+                // Position tmp = 
 
 
                 return positionTarget;
