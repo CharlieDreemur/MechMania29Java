@@ -63,7 +63,7 @@ public class AstarZombie extends IndividualStrategy {
 
                 // Count the number of zombies nearby the potential target
                 for (Character character : gameState.characters().values()) {
-                    if (character.zombie() && Helpers.ManhattonDistanceFunction(character.position(), attackeePos) <= 5) {
+                    if (character.isZombie() && Helpers.ManhattonDistanceFunction(character.position(), attackeePos) <= 5) {
                         nearbyZombies++;
                     }
                 }
