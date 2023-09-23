@@ -49,42 +49,40 @@ public class SuperHuman extends IndividualStrategy {
                 case 12:
                 return new MoveAction(id, new Position(49, 50));
                 case 14:
-                return new MoveAction(id, new Position(49, 50));
-                case 16:
                 return new MoveAction(id, new Position(53, 50));
-                case 18:
+                case 16:
                 return new MoveAction(id, new Position(57, 50));
-                case 20:
+                case 18:
                 return new MoveAction(id, new Position(61, 50));
-                case 22:
+                case 20:
                 return new MoveAction(id, new Position(65, 50));
-                case 24:
+                case 22:
                 return new MoveAction(id, new Position(69, 50));
-                case 26:
+                case 24:
                 return new MoveAction(id, new Position(71, 52));
-                case 28:
+                case 26:
                 return new MoveAction(id, new Position(75,52));
-                case 30:
+                case 28:
                 return new MoveAction(id, new Position(77,54));
-                case 32:
+                case 30:
                 return new MoveAction(id, new Position(81,54));
-                case 34:
+                case 32:
                 return new MoveAction(id, new Position(81,50));
-                case 36:
+                case 34:
                 return new MoveAction(id, new Position(85,50));
-                case 38:
+                case 36:
                 return new MoveAction(id, new Position(89,50));
-                case 40:
+                case 38:
                 return new MoveAction(id, new Position(92,51));
-                case 42:
+                case 40:
                 return new MoveAction(id, new Position(90,53));
-                case 44:
+                case 42:
                 return new MoveAction(id, new Position(87,53));
-                case 46:
+                case 44:
                 return new MoveAction(id, new Position(87,57));
-                case 48:
+                case 46:
                 return new MoveAction(id, new Position(91,57));
-                case 50:
+                case 48:
                 return new MoveAction(id, new Position(95,56));
                 default:
                 Pair<Character, Integer> closestPair = Helpers.FindNearestZombie(self, gameState.characters().values());
