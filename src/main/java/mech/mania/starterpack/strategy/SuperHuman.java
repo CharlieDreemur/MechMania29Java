@@ -79,7 +79,7 @@ public class SuperHuman extends IndividualStrategy {
         AbilityAction chooseAbilityAction = abilityActions.get(0);
         switch (type) {
             case BUILD_BARRICADE:
-                chooseAbilityAction = HumanHelpers.Build(gameState, abilityActions);
+                chooseAbilityAction = HumanHelpers.SuperBuild(gameState, abilityActions);
             case HEAL:
                 chooseAbilityAction = HumanHelpers.Heal(gameState, abilityActions);
         }
