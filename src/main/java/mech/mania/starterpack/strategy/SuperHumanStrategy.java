@@ -14,9 +14,8 @@ import java.util.*;
 /**
  * A simple human which runs away from zombies
  */
-public class NaiveHumanStrategy extends Strategy {
-    NaiveHuman human = new NaiveHuman();
-    NaiveBuilder builder = new NaiveBuilder();
+public class SuperHumanStrategy extends Strategy {
+    SuperHuman human = new SuperHuman();
 
     @Override
     public Map<CharacterClassType, Integer> decideCharacterClasses(
@@ -27,8 +26,8 @@ public class NaiveHumanStrategy extends Strategy {
         return Map.of(
                 CharacterClassType.MARKSMAN, 5,
                 CharacterClassType.MEDIC, 5,
-                CharacterClassType.TRACEUR, 5,
-                CharacterClassType.DEMOLITIONIST, 1);
+                CharacterClassType.TRACEUR, 1,
+                CharacterClassType.BUILDER, 5);
     }
 
     @Override
@@ -41,12 +40,7 @@ public class NaiveHumanStrategy extends Strategy {
             List<MoveAction> moves = entry.getValue();
             Character character = gameState.characters().get(characterId);
             MoveAction moveChoice = null;
-            switch (character.classType()) {
-                case BUILDER:
-                    moveChoice = builder.Move(characterId, gameState, moves);
-                default:
-                    moveChoice = human.Move(characterId, gameState, moves);
-            }
+            moveChoice = human.Move(characterId, gameState, moves);
 
             if (moveChoice != null)
                 choices.add(moveChoice);
@@ -69,13 +63,7 @@ public class NaiveHumanStrategy extends Strategy {
             if (attacks.isEmpty()) {
                 return choices;
             }
-            switch (character.classType()) {
-                case BUILDER:
-                    attackChoice = builder.Attack(characterId, gameState, attacks);
-                    break;
-                default:
-                    attackChoice = human.Attack(characterId, gameState, attacks);
-            }
+            attackChoice = human.Attack(characterId, gameState, attacks);
             if (attackChoice != null)
                 choices.add(attackChoice);
         }
@@ -96,13 +84,7 @@ public class NaiveHumanStrategy extends Strategy {
             if (abilities.isEmpty()) {
                 return choices;
             }
-            switch (character.classType()) {
-                case BUILDER:
-                    abilityAction = builder.Ability(characterId, gameState, abilities);
-                    break;
-                default:
-                    abilityAction = human.Ability(characterId, gameState, abilities);
-            }
+            abilityAction = human.Ability(characterId, gameState, abilities);
             if (abilityAction != null)
                 choices.add(abilityAction);
         }

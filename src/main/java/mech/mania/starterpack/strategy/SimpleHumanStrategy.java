@@ -49,7 +49,7 @@ public class SimpleHumanStrategy extends Strategy {
 
                 // Find the closest zombie
                 for (Character c : gameState.characters().values()) {
-                    if (!c.zombie()) {
+                    if (!c.isZombie()) {
                         continue;  // Ignore fellow humans
                     }
                     int distance = Math.abs(c.position().x() - pos.x()) +
@@ -149,7 +149,6 @@ public class SimpleHumanStrategy extends Strategy {
                         leastHealth = health;
                     }
                 }
-
                 choices.add(humanTarget);
             }
         }

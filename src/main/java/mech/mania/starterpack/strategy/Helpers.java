@@ -6,13 +6,18 @@ import mech.mania.starterpack.game.util.Position;
 import java.lang.Math;
 import mech.mania.starterpack.game.character.action.AbilityAction;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import mech.mania.starterpack.strategy.Pair;
 import mech.mania.starterpack.game.terrain.Terrain;
 import mech.mania.starterpack.game.GameState;
-
+import mech.mania.starterpack.game.character.action.CharacterClassType;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 //All needs add obstacle detection
 public class Helpers {
     public static int ManhattonDistanceFunction(
@@ -40,12 +45,50 @@ public class Helpers {
         return new AbilityAction(id, _healTarget.id(), null, AbilityActionType.HEAL);
     }
 
+    public static int GetSpeed(Character _character) {
+        switch (_character.classType()) {
+            case NORMAL:
+                return 3;
+            case MARKSMAN:
+                return 3;
+            case TRACEUR:
+                return 4;
+            case MEDIC:
+                return 3;
+            case BUILDER:
+                return 3;
+            case DEMOLITIONIST:
+                return 3;
+            default:
+                return 3;
+        }
+    }
+
+    public static int GetAttackRange(Character _character) {
+        switch (_character.classType()) {
+            case NORMAL:
+                return 4;
+            case MARKSMAN:
+                return 6;
+            case TRACEUR:
+                return 2;
+            case MEDIC:
+                return 3;
+            case BUILDER:
+                return 4;
+            case DEMOLITIONIST:
+                return 2;
+            default:
+                return 4;
+        }
+    }
+
     // Find nearest, returned as map of <people, distance>.
     public static Pair<Character, Integer> FindNearestZombie(Character _human, Collection<Character> _charList) {
         int _leastDistance = 200;
         Character nearest = null;
         for (Character c : _charList) {
-            if (c.zombie()) {
+            if (c.isZombie()) {
                 if (ManhattonDistanceFunction(_human.position(), c.position()) < _leastDistance) {
                     nearest = c;
                     _leastDistance = ManhattonDistanceFunction(_human.position(), c.position());
@@ -62,7 +105,7 @@ public class Helpers {
         int _leastDistance = 200;
         Character nearest = null;
         for (Character c : _charList) {
-            if (!c.zombie()) {
+            if (!c.isZombie()) {
                 if (ManhattonDistanceFunction(_zombie.position(), c.position()) < _leastDistance) {
                     nearest = c;
                     _leastDistance = ManhattonDistanceFunction(_zombie.position(), c.position());
@@ -78,7 +121,7 @@ public class Helpers {
     public static List<Pair<Character, Integer>> FindAllZombies(Character _human, Collection<Character> _charList) {
         List<Pair<Character, Integer>> _allZombieDist = null;
         for (Character c : _charList) {
-            if (c.zombie()) {
+            if (c.isZombie()) {
                 Pair<Character, Integer> _indv_zombie = null;
                 _indv_zombie = new Pair<>(c, ManhattonDistanceFunction(_human.position(), c.position()));
                 _allZombieDist.add(_indv_zombie);
@@ -87,11 +130,11 @@ public class Helpers {
         }
         return _allZombieDist;
     }
-
+    
     public static List<Pair<Character, Integer>> FindAllHumans(Character _zombie, Collection<Character> _charList) {
         List<Pair<Character, Integer>> _allHumanDist = null;
         for (Character c : _charList) {
-            if (!c.zombie()) {
+            if (!c.isZombie()) {
                 Pair<Character, Integer> _indv_human = null;
                 _indv_human = new Pair<>(c, ManhattonDistanceFunction(_zombie.position(), c.position()));
                 _allHumanDist.add(_indv_human);
@@ -100,8 +143,54 @@ public class Helpers {
         return _allHumanDist;
     }
 
-    // public static boolean canAlwaysStun(Collection<Character> _charList){
-    // for (Character c:_charList)
+    public static List<Map<Character, Character>> canAlwaysStun(Collection<Character> _charList) {
+        List<Character> zombieList = new ArrayList<>();
+        List<Character> humanList = new ArrayList<>();
+        List<Map<Character, Character>> stunList = new ArrayList<>();
+        // Init
+        for (Character c : _charList) {
+            if (c.isZombie()) {
+                zombieList.add(c);
+            } else {
+                humanList.add(c);
+            }
+        }
+        List<Character> attackHumansList = new ArrayList<Character>();
+        for (int i = 0; i < 3; i++) {
+            Map<Character, Character> stunMap = new HashMap<Character, Character>();
+            List<Character> attackZombieList = new ArrayList<Character>(zombieList);
+            for (Character human : humanList) {
+                if (attackHumansList.contains(human)) {
+                    continue;
+                }
+                boolean isZombieInRange = false;
+                Character farestTargetZombie = null;
+                int farestDistance = 0;
+                for (Pair<Character, Integer> currentZombieTarget : FindAllZombies(human, zombieList)) {
+                    if (currentZombieTarget.second < (i + 1) * GetSpeed(human) + GetAttackRange(human)) {
+                        isZombieInRange = true;
+                        if (farestDistance >= (int) currentZombieTarget.second) {
+                            farestDistance = (int) currentZombieTarget.second;
+                            farestTargetZombie = currentZombieTarget.first;
+                        }
+                    }
+                }
+                if (isZombieInRange) {
+                    attackHumansList.add(human);
+                    attackZombieList.remove(farestTargetZombie);
+                    stunMap.put(human, farestTargetZombie);
+                }
+                if (attackZombieList.isEmpty()) {
+                    continue;
+                } else {
+                    return Collections.emptyList();
+                    //return stunList;
+                }
+            }
+        }
+        //return stunList;
+        return Collections.emptyList();
+    }
     // step 0 : List zombieList; //for (Character c : _charList) {if zombie() add to
     // zombieList}
     // List humanList//all non-normal humans
@@ -129,7 +218,7 @@ public class Helpers {
     // boolean zombie_in_range = 0; farest_zombie_in_attack_range = null;
     // farest_distance = 0;
     // for(pair currentZombieTarget :FindAllZombies(human)) {
-    // if (currentZombieTarget.second < human.movespeed + human.attackrange) {
+    // if (currentZombieTarget.second < 2*human.movespeed + human.attackrange) {
     // AttackerList.add(human); zombie_in_range = 1; if(farest_distance <=
     // currentZombieTarget.second) {farest_distance = currentZombieTarget.second;
     // farest_zombie_in_attack_range = currentZombieTarget;}
@@ -147,7 +236,7 @@ public class Helpers {
     // boolean zombie_in_range = 0; farest_zombie_in_attack_range = null;
     // farest_distance = 0;
     // for(pair currentZombieTarget :FindAllZombies(human)) {
-    // if (currentZombieTarget.second < human.movespeed + human.attackrange) {
+    // if (currentZombieTarget.second < 3*human.movespeed + human.attackrange) {
     // AttackerList.add(human); zombie_in_range = 1; if(farest_distance <=
     // currentZombieTarget.second) {farest_distance = currentZombieTarget.second;
     // farest_zombie_in_attack_range = currentZombieTarget;}
