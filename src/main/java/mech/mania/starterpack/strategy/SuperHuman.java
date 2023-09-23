@@ -47,42 +47,40 @@ public class SuperHuman extends IndividualStrategy {
                 case 10:
                 return new MoveAction(id, new Position(49, 50));
                 case 12:
-                return new MoveAction(id, new Position(49, 50));
-                case 14:
                 return new MoveAction(id, new Position(53, 50));
-                case 16:
+                case 14:
                 return new MoveAction(id, new Position(57, 50));
-                case 18:
+                case 16:
                 return new MoveAction(id, new Position(61, 50));
-                case 20:
+                case 18:
                 return new MoveAction(id, new Position(65, 50));
-                case 22:
+                case 20:
                 return new MoveAction(id, new Position(69, 50));
-                case 24:
+                case 22:
                 return new MoveAction(id, new Position(71, 52));
-                case 26:
+                case 24:
                 return new MoveAction(id, new Position(75,52));
-                case 28:
+                case 26:
                 return new MoveAction(id, new Position(77,54));
-                case 30:
+                case 28:
                 return new MoveAction(id, new Position(81,54));
-                case 32:
+                case 30:
                 return new MoveAction(id, new Position(81,50));
-                case 34:
+                case 32:
                 return new MoveAction(id, new Position(85,50));
-                case 36:
+                case 34:
                 return new MoveAction(id, new Position(89,50));
-                case 38:
+                case 36:
                 return new MoveAction(id, new Position(92,51));
-                case 40:
+                case 38:
                 return new MoveAction(id, new Position(90,53));
-                case 42:
+                case 40:
                 return new MoveAction(id, new Position(87,53));
-                case 44:
+                case 42:
                 return new MoveAction(id, new Position(87,57));
-                case 46:
+                case 44:
                 return new MoveAction(id, new Position(91,57));
-                case 48:
+                case 46:
                 return new MoveAction(id, new Position(95,56));
                 default:
                 Pair<Character, Integer> closestPair = Helpers.FindNearestZombie(self, gameState.characters().values());
@@ -99,204 +97,196 @@ public class SuperHuman extends IndividualStrategy {
             // astar.getBestMoveAction(gameState, pos, new Position(50, 50), moveActions,
             // 3);
             case 4:
-                return new MoveAction(id, new Position(50, 47));
-            // astar.getBestMoveAction(gameState, pos, new Position(50, 47), moveActions,
-            // 3);
+                return new MoveAction(id, new Position(50, 53));
             case 6:
-                return new MoveAction(id, new Position(50, 45));
-            case 8:
-                return new MoveAction(id, new Position(50, 48));
-            case 10:
-                return new MoveAction(id, new Position(50, 51));
-            case 12:
                 return new MoveAction(id, new Position(50, 54));
-            case 14:
+            case 8:
                 return new MoveAction(id, new Position(50, 57));
-            case 16:
+            case 10:
                 return new MoveAction(id, new Position(50, 60));
-            case 18:
+            case 12:
                 return new MoveAction(id, new Position(50, 63));
-            case 20:
+            case 14:
                 return new MoveAction(id, new Position(50, 66));
-            case 22:
+            case 16:
                 return new MoveAction(id, new Position(50, 66));
-            case 24:
+            case 18:
                 return new MoveAction(id, new Position(47, 69));
-            case 26:
+            case 20:
                 return new MoveAction(id, new Position(44, 69));
-            case 28:
+            case 22:
                 return new MoveAction(id, new Position(41, 69));
-            case 30:
+            case 24:
                 return new MoveAction(id, new Position(41, 72));
-            case 32:
+            case 26:
                 return new MoveAction(id, new Position(41, 75));
-            case 34:
+            case 28:
                 return new MoveAction(id, new Position(41, 78));
-            case 36:
+            case 30:
                 return new MoveAction(id, new Position(38, 78));
-            case 38:
+            case 32:
                 return new MoveAction(id, new Position(35, 78));
-            case 40:
+            case 34:
                 return new MoveAction(id, new Position(32, 78));
-            case 42:
+            case 36:
                 return new MoveAction(id, new Position(29, 78));
-            case 44:
+            case 38:
                 return new MoveAction(id, new Position(26, 78));
-            case 46:
+            case 40:
                 return new MoveAction(id, new Position(25, 80));
-            case 48:
+            case 42:
                 return new MoveAction(id, new Position(25, 83));
-            case 50:
+            case 44:
                 return new MoveAction(id, new Position(25, 86));
-            case 52:
+            case 46:
                 return new MoveAction(id, new Position(22, 86));
-            case 54:
+            case 48:
                 return new MoveAction(id, new Position(22, 89));
+            case 50:
+                return new MoveAction(id, new Position(21, 91));
+            case 52:
+                return new MoveAction(id, new Position(21, 94));
+            case 54:
+                return new MoveAction(id, new Position(21, 97));
             case 56:
-                return new MoveAction(id, new Position(21, 91));
+                return new MoveAction(id, new Position(18, 97));
             case 58:
-                return new MoveAction(id, new Position(21, 94));
+                return new MoveAction(id, new Position(15, 97));
             case 60:
-                return new MoveAction(id, new Position(21, 97));
+                return new MoveAction(id, new Position(13, 98));
             case 62:
-                return new MoveAction(id, new Position(18, 97));
+                return new MoveAction(id, new Position(10, 98));
             case 64:
-                return new MoveAction(id, new Position(15, 97));
+                return new MoveAction(id, new Position(7, 98));
             case 66:
-                return new MoveAction(id, new Position(13, 98));
+                return new MoveAction(id, new Position(5, 97));
             case 68:
-                return new MoveAction(id, new Position(10, 98));
+                return new MoveAction(id, new Position(4, 95));
             case 70:
-                return new MoveAction(id, new Position(7, 98));
+                return new MoveAction(id, new Position(4, 92));
             case 72:
-                return new MoveAction(id, new Position(5, 97));
+                return new MoveAction(id, new Position(4, 89));
             case 74:
-                return new MoveAction(id, new Position(4, 95));
+                return new MoveAction(id, new Position(4, 89));
             case 76:
-                return new MoveAction(id, new Position(4, 92));
+                return new MoveAction(id, new Position(5, 87));
             case 78:
-                return new MoveAction(id, new Position(4, 89));
+                return new MoveAction(id, new Position(8, 87));
             case 80:
-                return new MoveAction(id, new Position(4, 89));
+                return new MoveAction(id, new Position(11, 87));
             case 82:
-                return new MoveAction(id, new Position(5, 87));
+                return new MoveAction(id, new Position(13, 88));
             case 84:
-                return new MoveAction(id, new Position(8, 87));
+                return new MoveAction(id, new Position(15, 89));
             case 86:
-                return new MoveAction(id, new Position(11, 87));
+                return new MoveAction(id, new Position(18, 89));
             case 88:
-                return new MoveAction(id, new Position(13, 88));
+                return new MoveAction(id, new Position(19, 91));
             case 90:
-                return new MoveAction(id, new Position(15, 89));
+                return new MoveAction(id, new Position(21, 91));
             case 92:
-                return new MoveAction(id, new Position(18, 89));
+                return new MoveAction(id, new Position(21, 94));
             case 94:
-                return new MoveAction(id, new Position(19, 91));
+                return new MoveAction(id, new Position(21, 97));
             case 96:
-                return new MoveAction(id, new Position(21, 91));
+                return new MoveAction(id, new Position(18, 97));
             case 98:
-                return new MoveAction(id, new Position(21, 94));
+                return new MoveAction(id, new Position(15, 97));
             case 100:
-                return new MoveAction(id, new Position(21, 97));
+                return new MoveAction(id, new Position(13, 98));
             case 102:
-                return new MoveAction(id, new Position(18, 97));
+                return new MoveAction(id, new Position(10, 98));
             case 104:
-                return new MoveAction(id, new Position(15, 97));
+                return new MoveAction(id, new Position(7, 98));
             case 106:
-                return new MoveAction(id, new Position(13, 98));
+                return new MoveAction(id, new Position(5, 97));
             case 108:
-                return new MoveAction(id, new Position(10, 98));
+                return new MoveAction(id, new Position(4, 95));
             case 110:
-                return new MoveAction(id, new Position(7, 98));
+                return new MoveAction(id, new Position(4, 92));
             case 112:
-                return new MoveAction(id, new Position(5, 97));
+                return new MoveAction(id, new Position(4, 89));
             case 114:
-                return new MoveAction(id, new Position(4, 95));
+                return new MoveAction(id, new Position(4, 89));
             case 116:
-                return new MoveAction(id, new Position(4, 92));
+                return new MoveAction(id, new Position(5, 87));
             case 118:
-                return new MoveAction(id, new Position(4, 89));
+                return new MoveAction(id, new Position(8, 87));
             case 120:
-                return new MoveAction(id, new Position(4, 89));
+                return new MoveAction(id, new Position(11, 87));
             case 122:
-                return new MoveAction(id, new Position(5, 87));
+                return new MoveAction(id, new Position(13, 88));
             case 124:
-                return new MoveAction(id, new Position(8, 87));
+                return new MoveAction(id, new Position(15, 89));
             case 126:
-                return new MoveAction(id, new Position(11, 87));
+                return new MoveAction(id, new Position(18, 89));
             case 128:
-                return new MoveAction(id, new Position(13, 88));
+                return new MoveAction(id, new Position(19, 91));
             case 130:
-                return new MoveAction(id, new Position(15, 89));
+                return new MoveAction(id, new Position(21, 91));
             case 132:
-                return new MoveAction(id, new Position(18, 89));
+                return new MoveAction(id, new Position(21, 94));
             case 134:
-                return new MoveAction(id, new Position(19, 91));
+                return new MoveAction(id, new Position(21, 97));
             case 136:
-                return new MoveAction(id, new Position(21, 91));
+                return new MoveAction(id, new Position(18, 97));
             case 138:
-                return new MoveAction(id, new Position(21, 94));
+                return new MoveAction(id, new Position(15, 97));
             case 140:
-                return new MoveAction(id, new Position(21, 97));
+                return new MoveAction(id, new Position(13, 98));
             case 142:
-                return new MoveAction(id, new Position(18, 97));
+                return new MoveAction(id, new Position(10, 98));
             case 144:
-                return new MoveAction(id, new Position(15, 97));
+                return new MoveAction(id, new Position(7, 98));
             case 146:
-                return new MoveAction(id, new Position(13, 98));
+                return new MoveAction(id, new Position(5, 97));
             case 148:
-                return new MoveAction(id, new Position(10, 98));
+                return new MoveAction(id, new Position(4, 95));
             case 150:
-                return new MoveAction(id, new Position(7, 98));
+                return new MoveAction(id, new Position(4, 92));
             case 152:
-                return new MoveAction(id, new Position(5, 97));
+                return new MoveAction(id, new Position(4, 89));
             case 154:
-                return new MoveAction(id, new Position(4, 95));
+                return new MoveAction(id, new Position(4, 89));
             case 156:
-                return new MoveAction(id, new Position(4, 92));
-            case 158:
-                return new MoveAction(id, new Position(4, 89));
-            case 160:
-                return new MoveAction(id, new Position(4, 89));
-            case 162:
                 return new MoveAction(id, new Position(5, 87));
-            case 164:
+            case 158:
                 return new MoveAction(id, new Position(8, 87));
-            case 166:
+            case 160:
                 return new MoveAction(id, new Position(11, 87));
-            case 168:
+            case 162:
                 return new MoveAction(id, new Position(13, 88));
-            case 170:
+            case 164:
                 return new MoveAction(id, new Position(15, 89));
-            case 172:
+            case 166:
                 return new MoveAction(id, new Position(18, 89));
-            case 174:
+            case 168:
                 return new MoveAction(id, new Position(19, 91));
-            case 176:
+            case 170:
                 return new MoveAction(id, new Position(21, 91));
-            case 178:
+            case 172:
                 return new MoveAction(id, new Position(21, 94));
-            case 180:
+            case 174:
                 return new MoveAction(id, new Position(21, 97));
-            case 182:
+            case 176:
                 return new MoveAction(id, new Position(18, 97));
-            case 184:
+            case 178:
                 return new MoveAction(id, new Position(15, 97));
-            case 186:
+            case 180:
                 return new MoveAction(id, new Position(13, 98));
-            case 188:
+            case 182:
                 return new MoveAction(id, new Position(10, 98));
-            case 190:
+            case 184:
                 return new MoveAction(id, new Position(7, 98));
-            case 192:
+            case 186:
                 return new MoveAction(id, new Position(5, 97));
-            case 194:
+            case 188:
                 return new MoveAction(id, new Position(4, 95));
-            case 196:
+            case 190:
                 return new MoveAction(id, new Position(4, 92));
-            case 198:
+            case 192:
                 return new MoveAction(id, new Position(4, 89));
-            case 200:
+            case 194:
                 return new MoveAction(id, new Position(4, 89));
             default:
                 Pair<Character, Integer> closestPair = Helpers.FindNearestZombie(self, gameState.characters().values());
