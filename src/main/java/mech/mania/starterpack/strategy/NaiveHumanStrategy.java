@@ -66,6 +66,9 @@ public class NaiveHumanStrategy extends Strategy {
             List<AttackAction> attacks = entry.getValue();
             Character character = gameState.characters().get(characterId);
             AttackAction attackChoice = null;
+            if (attacks.isEmpty()) {
+                return choices;
+            }
             switch (character.classType()) {
                 case BUILDER:
                     attackChoice = builder.Attack(characterId, gameState, attacks);
@@ -90,6 +93,9 @@ public class NaiveHumanStrategy extends Strategy {
             List<AbilityAction> abilities = entry.getValue();
             Character character = gameState.characters().get(characterId);
             AbilityAction abilityAction = null;
+            if (abilities.isEmpty()) {
+                return choices;
+            }
             switch (character.classType()) {
                 case BUILDER:
                     abilityAction = builder.Ability(characterId, gameState, abilities);

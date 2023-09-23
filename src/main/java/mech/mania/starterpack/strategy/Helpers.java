@@ -86,7 +86,7 @@ public class Helpers {
         int _leastDistance = 200;
         Character nearest = null;
         for (Character c : _charList) {
-            if (c.zombie()) {
+            if (c.isZombie()) {
                 if (ManhattonDistanceFunction(_human.position(), c.position()) < _leastDistance) {
                     nearest = c;
                     _leastDistance = ManhattonDistanceFunction(_human.position(), c.position());
@@ -103,7 +103,7 @@ public class Helpers {
         int _leastDistance = 200;
         Character nearest = null;
         for (Character c : _charList) {
-            if (!c.zombie()) {
+            if (!c.isZombie()) {
                 if (ManhattonDistanceFunction(_zombie.position(), c.position()) < _leastDistance) {
                     nearest = c;
                     _leastDistance = ManhattonDistanceFunction(_zombie.position(), c.position());
@@ -119,7 +119,7 @@ public class Helpers {
     public static List<Pair<Character, Integer>> FindAllZombies(Character _human, Collection<Character> _charList) {
         List<Pair<Character, Integer>> _allZombieDist = null;
         for (Character c : _charList) {
-            if (c.zombie()) {
+            if (c.isZombie()) {
                 Pair<Character, Integer> _indv_zombie = null;
                 _indv_zombie = new Pair<>(c, ManhattonDistanceFunction(_human.position(), c.position()));
                 _allZombieDist.add(_indv_zombie);
@@ -132,7 +132,7 @@ public class Helpers {
     public static List<Pair<Character, Integer>> FindAllHumans(Character _zombie, Collection<Character> _charList) {
         List<Pair<Character, Integer>> _allHumanDist = null;
         for (Character c : _charList) {
-            if (!c.zombie()) {
+            if (!c.isZombie()) {
                 Pair<Character, Integer> _indv_human = null;
                 _indv_human = new Pair<>(c, ManhattonDistanceFunction(_zombie.position(), c.position()));
                 _allHumanDist.add(_indv_human);
@@ -148,7 +148,7 @@ public class Helpers {
         List<Map<Character, Character>> stunList = new ArrayList<Map<Character, Character>>(null);
         // Init
         for (Character c : _charList) {
-            if (c.zombie()) {
+            if (c.isZombie()) {
                 zombieList.add(c);
             } else {
                 humanList.add(c);
