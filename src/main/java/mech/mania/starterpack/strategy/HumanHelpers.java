@@ -1,5 +1,6 @@
 package mech.mania.starterpack.strategy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -84,6 +85,33 @@ public class HumanHelpers {
             }
         }
         return humanTarget;
+    }
+
+    public static AbilityAction SuperBuild(GameState gameState, List<AbilityAction> abilities) {
+        List<Position> positions = new ArrayList<Position>();
+        positions.add(new Position(50, 42));
+        positions.add(new Position(49, 43));
+        positions.add(new Position(50, 43));
+        positions.add(new Position(51, 43));
+        positions.add(new Position(50, 44));
+        positions.add(new Position(50, 56));
+        positions.add(new Position(50, 57));
+        positions.add(new Position(49, 58));
+        positions.add(new Position(50, 58));
+        positions.add(new Position(51, 58));
+        positions.add(new Position(24, 80));
+        positions.add(new Position(25, 80));
+        positions.add(new Position(26, 80));
+        positions.add(new Position(24, 81));
+        positions.add(new Position(25, 81));
+        for (AbilityAction possible : abilities) {
+            for (Position pos : positions) {
+                if (possible.positionalTarget().equals(pos)) {
+                    return possible;
+                }
+            }
+        }
+        return null;
     }
 
     public static AbilityAction Build(GameState gameState, List<AbilityAction> abilities) {
