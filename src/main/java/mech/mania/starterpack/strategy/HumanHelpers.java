@@ -13,7 +13,7 @@ public class HumanHelpers {
     public static MoveAction EscapeWalk(Position selfPos, Position enemyPos, List<MoveAction> possibleMoves) {
         float deltaX = (float)selfPos.x() - enemyPos.x();
         float deltaY = selfPos.y() - enemyPos.y();
-        // System.out.println(selfPos.x() - enemyPos.x());
+        System.out.println(selfPos.x() - enemyPos.x());
 
         double length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         double unitX = deltaX / length;
@@ -46,7 +46,7 @@ public class HumanHelpers {
         int closestZombieDistance = Integer.MAX_VALUE;
         // Find the closest zombie
         for (Character c : gameState.characters().values()) {
-            if (!c.isZombie()) {
+            if (!c.zombie()) {
                 continue;  // Ignore fellow humans
             }
             int distance = Math.abs(c.position().x() - selfPos.x()) +
@@ -69,6 +69,4 @@ public class HumanHelpers {
             return false;
         }
     }
-    
-    
 }

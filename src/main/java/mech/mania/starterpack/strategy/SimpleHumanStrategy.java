@@ -44,7 +44,7 @@ public class SimpleHumanStrategy extends Strategy {
             // Handle the case where there is no move to be made, such as when stunned
             if (!moves.isEmpty()) {
                 Position pos = gameState.characters().get(characterId).position();
-                Position closestZombiePos = pos;
+                Position closestZombiePos = new Position(1135, 1135);
                 int closestZombieDistance = Integer.MAX_VALUE;
 
                 // Find the closest zombie
@@ -52,7 +52,6 @@ public class SimpleHumanStrategy extends Strategy {
                     if (!c.zombie()) {
                         continue;  // Ignore fellow humans
                     }
-
                     int distance = Math.abs(c.position().x() - pos.x()) +
                             Math.abs(c.position().y() - pos.y());
 
@@ -62,21 +61,22 @@ public class SimpleHumanStrategy extends Strategy {
                     }
                 }
 
-                int moveDistance = -1;
-                MoveAction moveChoice = moves.get(0);
+                // int moveDistance = -1;
+                // MoveAction moveChoice = moves.get(0);
 
-                // Choose a move action that takes the character further from the closest zombie
-                for (MoveAction m : moves) {
-                    int distance = Math.abs(m.destination().x() - closestZombiePos.x()) +
-                            Math.abs(m.destination().y() - closestZombiePos.y());
+                // // Choose a move action that takes the character further from the closest zombie
+                // for (MoveAction m : moves) {
+                //     int distance = Math.abs(m.destination().x() - closestZombiePos.x()) +
+                //             Math.abs(m.destination().y() - closestZombiePos.y());
 
-                    if (distance > moveDistance) {
-                        moveDistance = distance;
-                        moveChoice = m;
-                    }
-                }
-
-                choices.add(moveChoice);
+                //     if (distance > moveDistance) {
+                //         moveDistance = distance;
+                //         moveChoice = m;
+                //     }
+                // }
+                // MoveAction moveChoice = moves.get(0);
+                MoveAction best = HumanHelpers.EscapeWalk(pos, closestZombiePos, moves);
+                choices.add(best);
             }
         }
 
